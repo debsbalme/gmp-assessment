@@ -474,51 +474,16 @@ def generate_category_summary(df, category_name=None):
     return summary
 
 
-# === Step 3: Generate Overall Recommendations ===
-def generate_overall_recommendations(category_summaries, maturity_levels):
-    summary_text = "\n\n".join([f"{cat}: {summary}" for cat, summary in category_summaries.items()])
-    maturity_dict = maturity_levels.to_dict(orient="records")
-
-    prompt = f"""
-    Based on the following summaries and maturity data, provide the top 10 maturity drivers for the client based on their current usage of google marketing platforms"
-
-    Maturity Levels:
-    {maturity_dict}
-
-    Summaries:
-    {summary_text}
-    """
-
-    client = openai.OpenAI(api_key=st.secrets["OPEN_AI_KEY"]["api_key"])
-    response = client.chat.completions.create(
-        model="gpt-4.1-mini",
-        messages=[
-            {"role": "system", "content": "Imagine you are a marketing agency focused on Adtech and Martech and Google Marketing Platform."},
-            {"role": "user", "content": prompt}
-        ],
-        max_tokens=300,
-        temperature=0.7
-    )
-    overall_recs = response.choices[0].message.content
-    return overall_recs
-
 
 # === Step 4: Display Results in Streamlit ===
-def display_results(maturity_levels, category_summaries, overall_recs, rec_output):
+def display_results(category_summaries):
     st.title("Google Marketing Platform Maturity Report")
 
-    st.header("Maturity Levels by Category")
-    st.dataframe(maturity_levels)
-
-    st.header("Matched Recommendations")
-    st.dataframe(pd.DataFrame(rec_output['matched_recommendations']))
 
     st.header("Category Summaries")
     for cat, summary in category_summaries.items():
         st.subheader(cat)
         st.markdown(summary)
 
-    st.header("Overall Recommendations")
-    st.markdown(overall_recs)
 
-    st.success(f"Total Recommendations Matched: {rec_output['total_matched_recommendations']}")
+   
