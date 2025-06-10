@@ -443,16 +443,16 @@ def run_recommendation_analysis(df):
 
 
 # === Step 2: Generate Category Summaries with GPT ===
-def generate_category_summary(df, category_name=None):
+def generate_category_summary(df):
     
-    subset = df[df["Category"] != "Business"] if category_name is None else df[df["Category"] == category_name]
+    subset = df[df["Category"] != "Business"]
     questions = subset["Question"].tolist()
     answers = subset["Answer"].tolist()
     comments = subset["Comment"].fillna("").tolist() if "Comment" in df.columns else []
 
     prompt = f"""
     Imagine you are a strategic advisor focused on Adtech and Martech.
-    Provide a short summary using the answers and comments for all questions.
+    Provide a short summary using the answers and comments for all questions focusing on the usage of Google Marketing Platform and maturity of the implementation of Adtech and Martech.
 
     Questions: {questions}
     Answers: {answers}
