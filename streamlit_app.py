@@ -51,21 +51,20 @@ def main():
 
                     st.subheader("Agent's Output")
                     if results['matched_recommendations']:
-    st.write("### Matched Recommendations")
-
-    # Validate all entries are dictionaries
-if all(isinstance(item, dict) for item in results['matched_recommendations']):
-        recommendations_df = pd.DataFrame(results['matched_recommendations'])
-        recommendations_df['score'] = recommendations_df['score'].round(2)
-        recommendations_df['maxweight'] = recommendations_df['maxweight'].round(2)
-        recommendations_df.rename(columns={
-            'recommendation': 'Recommendation',
-            'score': 'Score',
-            'maxweight': 'Max Weight'
-        }, inplace=True)
-        st.dataframe(recommendations_df, hide_index=True, use_container_width=True)
-    else:
-        st.error("Error: Some recommendations are not properly formatted as dictionaries.")
+                        st.write("### Matched Recommendations")
+                        # Validate all entries are dictionaries
+                        if all(isinstance(item, dict) for item in results['matched_recommendations']):
+                            recommendations_df = pd.DataFrame(results['matched_recommendations'])
+                            recommendations_df['score'] = recommendations_df['score'].round(2)
+                            recommendations_df['maxweight'] = recommendations_df['maxweight'].round(2)
+                            recommendations_df.rename(columns={
+                                'recommendation': 'Recommendation',
+                                'score': 'Score',
+                                'maxweight': 'Max Weight'
+                            }, inplace=True)
+                            st.dataframe(recommendations_df, hide_index=True, use_container_width=True)
+                        else:
+                            st.error("Error: Some recommendations are not properly formatted as dictionaries.")
                     else:
                         st.write("No recommendations matched based on the provided data.")
 
