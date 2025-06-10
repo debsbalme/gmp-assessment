@@ -2,6 +2,7 @@ import pandas as pd
 import json
 import math # For math.isnan to check for NaN values
 import openai
+import streamlit
 
 # Define the Recommendation Set as provided in your agent's internal knowledge base
 RECOMMENDATION_SET = [
