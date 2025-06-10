@@ -35,7 +35,7 @@ def main():
                     st.write("DEBUG: results['matched_recommendations']")
                     st.write(results['matched_recommendations'])
                 #     Calculate category maturity
-                    maturity_levels = calculate_maturity_levels(df)
+                  #  maturity_levels = calculate_maturity_levels(df)
 
                   #  Generate summaries for each category
                     category_summaries = {
