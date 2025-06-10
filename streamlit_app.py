@@ -35,20 +35,20 @@ def main():
                     results = run_recommendation_analysis(df)
                     st.write("DEBUG: results['matched_recommendations']")
                     st.write(results['matched_recommendations'])
-                    # Calculate category maturity
+                #     Calculate category maturity
                     maturity_levels = calculate_maturity_levels(df)
 
                     # Generate summaries for each category
-                   # category_summaries = {
-                   #     cat: generate_category_summary(df, cat)
-                   #     for cat in df["Category"].unique()
-                   # }
+                    category_summaries = {
+                        cat: generate_category_summary(df, cat)
+                        for cat in df["Category"].unique()
+                    }
 
                     # Generate overall recommendations
-                    #overall_recs = generate_overall_recommendations(category_summaries, maturity_levels)
+                    overall_recs = generate_overall_recommendations(category_summaries, maturity_levels)
 
                     # Display results
-                   # display_results(maturity_levels, category_summaries, overall_recs, results)
+                    display_results(maturity_levels, category_summaries, overall_recs, results)
 
                     #st.subheader("Agent's Output")
                     if results['matched_recommendations']:

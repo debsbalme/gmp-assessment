@@ -450,7 +450,7 @@ def generate_category_summary(df, category_name):
     comments = subset["Comment"].fillna("").tolist() if "Comment" in df.columns else []
 
     prompt = f"""
-    Imagine you are a marketing agent focused on Adtech and Martech.
+    Imagine you are a strategic advisor focused on Adtech and Martech.
     Provide a short summary using the answers and comments for all questions in the category: {category_name}.
 
     Questions: {questions}
@@ -479,8 +479,7 @@ def generate_overall_recommendations(category_summaries, maturity_levels):
     maturity_dict = maturity_levels.to_dict(orient="records")
 
     prompt = f"""
-    Based on the following summaries and maturity data, provide high-level strategic recommendations
-    for improving GMP usage and marketing maturity.
+    Based on the following summaries and maturity data, provide the top 10 maturity drivers for the client based on their current usage of google marketing platforms"
 
     Maturity Levels:
     {maturity_dict}
