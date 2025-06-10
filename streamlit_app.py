@@ -3,7 +3,7 @@ import streamlit as st
 import pandas as pd
 from recommendation_agent import (
     run_recommendation_analysis,
-    calculate_maturity_levels,
+#    calculate_maturity_levels,
     generate_category_summary,
     generate_overall_recommendations,
     display_results)
