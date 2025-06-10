@@ -38,17 +38,18 @@ def main():
                 #     Calculate category maturity
                     maturity_levels = calculate_maturity_levels(df)
 
-                    # Generate summaries for each category
-                   # category_summaries = {
-                    #    cat: generate_category_summary(df, cat)
-                    #    for cat in df["Category"].unique()
+                  #  Generate summaries for each category
+                    category_summaries = {
+                        #cat: generate_category_summary(df, cat)
+                        #for cat in df["Category"].unique()
+                        generate_category_summary(df)
                     }
 
                     # Generate overall recommendations
                    # overall_recs = generate_overall_recommendations(category_summaries, maturity_levels)
 
                     # Display results
-                    display_results(maturity_levels)
+                  #  display_results(maturity_levels)
                                     #, category_summaries, overall_recs, results)
 
                     #st.subheader("Agent's Output")

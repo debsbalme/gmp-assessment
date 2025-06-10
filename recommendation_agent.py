@@ -433,25 +433,26 @@ def run_recommendation_analysis(df):
 # Place run_recommendation_analysis() function here
 
 # === Step 1: Calculate Maturity Levels ===
-def calculate_maturity_levels(df):
-    category_maturity = df.groupby("Category").agg(
-        total_score=pd.NamedAgg(column="Score", aggfunc="sum"),
-        total_max_weight=pd.NamedAgg(column="MaxWeight", aggfunc="sum")
+#def calculate_maturity_levels(df):
+#    category_maturity = df.groupby("Category").agg(
+#        total_score=pd.NamedAgg(column="Score", aggfunc="sum"),
+#        total_max_weight=pd.NamedAgg(column="MaxWeight", aggfunc="sum")
     )
-    category_maturity["maturity_level"] = (category_maturity["total_score"] / category_maturity["total_max_weight"] * 100).round(2)
-    return category_maturity.reset_index()
+#    category_maturity["maturity_level"] = (category_maturity["total_score"] / category_maturity["total_max_weight"] * 100).round(2)
+#    return category_maturity.reset_index()
 
 
 # === Step 2: Generate Category Summaries with GPT ===
-def generate_category_summary(df, category_name):
-    subset = df[df["Category"] == category_name]
+def generate_category_summary(df, category_name=None):
+    
+    subset = df[df["Category"] != "Business"] if category_name is None else df[df["Category"] == category_name]
     questions = subset["Question"].tolist()
     answers = subset["Answer"].tolist()
     comments = subset["Comment"].fillna("").tolist() if "Comment" in df.columns else []
 
     prompt = f"""
     Imagine you are a strategic advisor focused on Adtech and Martech.
-    Provide a short summary using the answers and comments for all questions in the category: {category_name}.
+    Provide a short summary using the answers and comments for all questions.
 
     Questions: {questions}
     Answers: {answers}
