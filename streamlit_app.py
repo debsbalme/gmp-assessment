@@ -41,7 +41,7 @@ def main():
                     category_summaries = {
                         #cat: generate_category_summary(df, cat)
                         #for cat in df["Category"].unique()
-                   #     generate_category_summary(df)
+                        generate_category_summary(df)
                     }
 
                     # Generate overall recommendations
