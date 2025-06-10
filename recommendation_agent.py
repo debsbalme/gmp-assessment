@@ -1,8 +1,7 @@
-
 import pandas as pd
 import json
 import math # For math.isnan to check for NaN values
-import streamlit as st
+import openai
 
 # Define the Recommendation Set as provided in your agent's internal knowledge base
 RECOMMENDATION_SET = [
@@ -272,42 +271,35 @@ RECOMMENDATION_SET = [
     }
 ]
 
-# Helper function to normalize answers consistent with agent's rules
-# This function will be used for both CSV answers and Recommendation Set answers
 def normalize_answer_for_comparison(answer_value):
-    # Handle NaN from pandas (e.g., empty cells in CSV)
+    """
+    Helper function to normalize answers consistent with agent's rules.
+    Used for both CSV answers and Recommendation Set answers.
+    """
     if pd.isna(answer_value):
         return ""
 
-    # Convert to string, strip whitespace, convert to lowercase
     normalized_val = str(answer_value).lower().strip()
 
-    # Apply agent's specific handling: if 'n/a' or empty, treat as empty string
     if normalized_val == 'n/a' or normalized_val == '':
         return ""
 
     return normalized_val
 
-def run_recommendation_agent(df):
+def run_recommendation_analysis(df):
     """
     Executes the AI Agent's logic to process DataFrame data, match recommendations,
     and calculate total scores and max weights.
-    Takes a pandas DataFrame as input.
+    Returns a dictionary containing matched recommendations and summary totals.
     """
-    # 1. Data Ingestion and Preparation:
     csv_data_map = {}
-    st.subheader("Preprocessed CSV Data (with Score and MaxWeight)")
     for index, row in df.iterrows():
-        # Preprocess question key consistently
         question_key = str(row['Question']).lower().strip()
-        # Normalize answer using the defined helper function
         answer_value = normalize_answer_for_comparison(row['Answer'])
 
-        # Handle NaN for Score and MaxWeight, default to 0.0 if NaN
         score = row['Score'] if pd.notna(row['Score']) else 0.0
         max_weight = row['MaxWeight'] if pd.notna(row['MaxWeight']) else 0.0
 
-        # Apply agent's specific handling for negative scores/maxweights (set to 0.0)
         score = max(0.0, float(score))
         max_weight = max(0.0, float(max_weight))
 
@@ -316,12 +308,8 @@ def run_recommendation_agent(df):
             'score': score,
             'maxweight': max_weight
         }
-        # Optionally display preprocessed data in Streamlit for debugging/transparency
-        # st.write(f"Question: {question_key}\nAnswer: '{answer_value}'\nScore: {score}\nMaxWeight: {max_weight}\n---")
-    st.write("CSV data preprocessed successfully.")
 
-    # 2. Recommendation Matching and Scoring Algorithm:
-    matched_recommendations_with_scores = [] # Store recommendation, score, and maxweight
+    matched_recommendations_with_scores = []
     total_matched_recommendations = 0
     total_score = 0.0
     total_max_score = 0.0
@@ -341,9 +329,7 @@ def run_recommendation_agent(df):
             question_score_to_add = 0.0
             question_max_weight_to_add = 0.0
 
-            # Handle Missing Questions: If rec_question is not in the CSV, this condition is automatically False.
             if user_answer_from_csv is not None:
-                # Prepare expected answers from recommendation set, normalizing each
                 normalized_rec_answers = []
                 if isinstance(rec_answer_raw, list):
                     normalized_rec_answers = [normalize_answer_for_comparison(val) for val in rec_answer_raw]
@@ -352,15 +338,13 @@ def run_recommendation_agent(df):
 
                 is_match_found = False
                 for expected_normalized_answer in normalized_rec_answers:
-                    # Strict comparison after consistent normalization
                     if user_answer_from_csv == expected_normalized_answer:
                         is_match_found = True
                         break
 
-                # Apply type Logic:
                 if rec_type == "negative_choice":
                     current_condition_met = not is_match_found
-                else:  # default positive match
+                else:
                     current_condition_met = is_match_found
 
                 if current_condition_met:
@@ -383,7 +367,6 @@ def run_recommendation_agent(df):
             group_questions = item['questions']
             group_recommendation = item['recommendation']
 
-            # Accumulate scores and max_weights for questions within this *potential* matched group
             current_group_contributing_scores = 0.0
             current_group_contributing_max_weights = 0.0
 
@@ -397,9 +380,7 @@ def run_recommendation_agent(df):
 
                 current_sub_q_condition_met = False
 
-                # Handle Missing Questions: If sub_q_question is not in the CSV, this condition is automatically False.
                 if user_answer_from_csv_sub_q is not None:
-                    # Prepare expected answers for sub-question, normalizing each
                     normalized_sub_q_answers = []
                     if isinstance(sub_q_answer_raw, list):
                         normalized_sub_q_answers = [normalize_answer_for_comparison(val) for val in sub_q_answer_raw]
@@ -408,27 +389,23 @@ def run_recommendation_agent(df):
 
                     is_sub_q_match_found = False
                     for expected_normalized_sub_q_ans in normalized_sub_q_answers:
-                        # Strict comparison after consistent normalization
                         if user_answer_from_csv_sub_q == expected_normalized_sub_q_ans:
                             is_sub_q_match_found = True
                             break
 
-                    # Apply type Logic:
                     if sub_q_type == "negative_choice":
                         current_sub_q_condition_met = not is_sub_q_match_found
-                    else: # default positive match
+                    else:
                         current_sub_q_condition_met = is_sub_q_match_found
                 else:
-                    # If question not found in CSV or user_answer_from_csv_sub_q is None, it fails the group condition
                     current_sub_q_condition_met = False
 
 
                 if not current_sub_q_condition_met:
                     all_sub_questions_match = False
-                    break  # Break from inner loop as one sub-question failed
+                    break
                 else:
-                    # If sub-question matches, add its score/maxweight to the temporary group sums
-                    if csv_sub_q_entry: # Ensure csv_sub_q_entry exists to get score/maxweight
+                    if csv_sub_q_entry:
                         current_group_contributing_scores += csv_sub_q_entry.get('score', 0.0)
                         current_group_contributing_max_weights += csv_sub_q_entry.get('maxweight', 0.0)
 
@@ -442,18 +419,85 @@ def run_recommendation_agent(df):
                 total_score += current_group_contributing_scores
                 total_max_score += current_group_contributing_max_weights
 
+    return {
+        'matched_recommendations': matched_recommendations_with_scores,
+        'total_matched_recommendations': total_matched_recommendations,
+        'total_score': total_score,
+        'total_max_score': total_max_score
+    }
 
-    # 3. Output Generation for Streamlit:
-    st.subheader("Agent's Output")
-    if matched_recommendations_with_scores:
-        st.write("Matched Recommendations:")
-        for rec_info in matched_recommendations_with_scores:
-            st.write(f"- {rec_info['recommendation']} (Score: {rec_info['score']:.2f}, MaxWeight: {rec_info['maxweight']:.2f})")
-    else:
-        st.write("No recommendations matched based on the provided data.")
 
-    st.markdown("---")
-    st.write(f"**Total Number of Recommendations Matched = {total_matched_recommendations}**")
-    st.write(f"**Total Matched Score = {total_score:.2f}**")
-    st.write(f"**Total Matched MaxWeight = {total_max_score:.2f}**")
-    st.markdown("---")
+# (Keep your RECOMMENDATION_SET and normalize_answer_for_comparison function here)
+
+# Place run_recommendation_analysis() function here
+
+# === Step 1: Calculate Maturity Levels ===
+def calculate_maturity_levels(df):
+    category_maturity = df.groupby("Category").agg(
+        total_score=pd.NamedAgg(column="Score", aggfunc="sum"),
+        total_max_weight=pd.NamedAgg(column="MaxWeight", aggfunc="sum")
+    )
+    category_maturity["maturity_level"] = (category_maturity["total_score"] / category_maturity["total_max_weight"] * 100).round(2)
+    return category_maturity.reset_index()
+
+# === Step 2: Generate Category Summaries with GPT ===
+def generate_category_summary(df, category_name):
+    subset = df[df["Category"] == category_name]
+    questions = subset["Question"].tolist()
+    answers = subset["Answer"].tolist()
+    comments = subset["Comment"].fillna("").tolist() if "Comment" in df.columns else []
+
+    prompt = f"""
+    Provide a short summary for the category: {category_name}.
+    Questions: {questions}
+    Answers: {answers}
+    Comments: {comments}
+    """
+
+    response = openai.ChatCompletion.create(
+        model="gpt-4o",
+        messages=[{"role": "user", "content": prompt}]
+    )
+    return response.choices[0].message["content"]
+
+# === Step 3: Generate Overall Recommendations ===
+def generate_overall_recommendations(category_summaries, maturity_levels):
+    summary_text = "\n\n".join([f"{cat}: {summary}" for cat, summary in category_summaries.items()])
+    maturity_dict = maturity_levels.to_dict(orient="records")
+
+    prompt = f"""
+    Based on the following summaries and maturity data, provide high-level strategic recommendations
+    for improving GMP usage and marketing maturity.
+
+    Maturity Levels:
+    {maturity_dict}
+
+    Summaries:
+    {summary_text}
+    """
+
+    response = openai.ChatCompletion.create(
+        model="gpt-4o",
+        messages=[{"role": "user", "content": prompt}]
+    )
+    return response.choices[0].message["content"]
+
+# === Step 4: Display Results in Streamlit ===
+def display_results(maturity_levels, category_summaries, overall_recs, rec_output):
+    st.title("Google Marketing Platform Maturity Report")
+
+    st.header("Maturity Levels by Category")
+    st.dataframe(maturity_levels)
+
+    st.header("Matched Recommendations")
+    st.dataframe(pd.DataFrame(rec_output['matched_recommendations']))
+
+    st.header("Category Summaries")
+    for cat, summary in category_summaries.items():
+        st.subheader(cat)
+        st.markdown(summary)
+
+    st.header("Overall Recommendations")
+    st.markdown(overall_recs)
+
+    st.success(f"Total Recommendations Matched: {rec_output['total_matched_recommendations']}")
