@@ -22,7 +22,7 @@ def main():
             df = pd.read_csv(uploaded_file)
 
             # Validate required columns
-            required_columns = ['Question', 'Answer', 'Score', 'MaxWeight']
+            required_columns = ['Category','Question', 'Answer', 'Score', 'MaxWeight']
             if not all(col in df.columns for col in required_columns):
                 st.error(f"Error: The uploaded CSV must contain the following columns: **{', '.join(required_columns)}**")
             else:

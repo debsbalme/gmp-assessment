@@ -9,7 +9,7 @@ RECOMMENDATION_SET = [
     {
         "question": "which automated bidding strategies have you used in dv360? please give further context of the performance in the comments section.",
         "answer": "n/a",
-        "recommendation": "Explore Automated Bidding Strategies in DV360"
+        "recommendation": "Explore Automaated Bidding Strategies in DV360"
     },
     {
         "question": "have you developed or used any of the following custom bidding algorithms in dv360? please give further context of the objectives and performance in the comments section.",
@@ -441,6 +441,7 @@ def calculate_maturity_levels(df):
     category_maturity["maturity_level"] = (category_maturity["total_score"] / category_maturity["total_max_weight"] * 100).round(2)
     return category_maturity.reset_index()
 
+
 # === Step 2: Generate Category Summaries with GPT ===
 def generate_category_summary(df, category_name):
     subset = df[df["Category"] == category_name]
@@ -448,7 +449,6 @@ def generate_category_summary(df, category_name):
     answers = subset["Answer"].tolist()
     comments = subset["Comment"].fillna("").tolist() if "Comment" in df.columns else []
 
-    # Format prompt for GPT-4o
     prompt = f"""
     Imagine you are a marketing agent focused on Adtech and Martech.
     Provide a short summary using the answers and comments for all questions in the category: {category_name}.
@@ -470,6 +470,7 @@ def generate_category_summary(df, category_name):
     )
 
     summary = response.choices[0].message.content
+    return summary
 
 
 # === Step 3: Generate Overall Recommendations ===
@@ -499,6 +500,7 @@ def generate_overall_recommendations(category_summaries, maturity_levels):
         temperature=0.7
     )
     overall_recs = response.choices[0].message.content
+    return overall_recs
 
 
 # === Step 4: Display Results in Streamlit ===
