@@ -448,18 +448,29 @@ def generate_category_summary(df, category_name):
     answers = subset["Answer"].tolist()
     comments = subset["Comment"].fillna("").tolist() if "Comment" in df.columns else []
 
+    # Format prompt for GPT-4o
     prompt = f"""
-    Provide a short summary for the category: {category_name}.
+    Imagine you are a marketing agent focused on Adtech and Martech.
+    Provide a short summary using the answers and comments for all questions in the category: {category_name}.
+
     Questions: {questions}
     Answers: {answers}
     Comments: {comments}
     """
-    client = openai.OpenAI()
+
+    client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
     response = client.chat.completions.create(
         model="gpt-4o",
-        messages=[{"role": "user", "content": prompt}]
+        messages=[
+            {"role": "system", "content": "Imagine you are a marketing agency focused on Adtech and Martech and Google Marketing Platform."},
+            {"role": "user", "content": prompt}
+        ],
+        max_tokens=300,
+        temperature=0.7
     )
-    reply = response.choices[0].message.content
+
+    summary = response.choices[0].message.content
+
 
 # === Step 3: Generate Overall Recommendations ===
 def generate_overall_recommendations(category_summaries, maturity_levels):
@@ -477,12 +488,18 @@ def generate_overall_recommendations(category_summaries, maturity_levels):
     {summary_text}
     """
 
-    client = openai.OpenAI()
+    client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
     response = client.chat.completions.create(
         model="gpt-4o",
-        messages=[{"role": "user", "content": prompt}]
+        messages=[
+            {"role": "system", "content": "Imagine you are a marketing agency focused on Adtech and Martech and Google Marketing Platform."},
+            {"role": "user", "content": prompt}
+        ],
+        max_tokens=300,
+        temperature=0.7
     )
-    reply = response.choices[0].message.content
+    overall_recs = response.choices[0].message.content
+
 
 # === Step 4: Display Results in Streamlit ===
 def display_results(maturity_levels, category_summaries, overall_recs, rec_output):
