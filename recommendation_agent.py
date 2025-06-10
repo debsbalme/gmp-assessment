@@ -460,7 +460,7 @@ def generate_category_summary(df, category_name):
 
     client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
     response = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4.1-mini",
         messages=[
             {"role": "system", "content": "Imagine you are a marketing agency focused on Adtech and Martech and Google Marketing Platform."},
             {"role": "user", "content": prompt}
@@ -490,7 +490,7 @@ def generate_overall_recommendations(category_summaries, maturity_levels):
 
     client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
     response = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4.1-mini",
         messages=[
             {"role": "system", "content": "Imagine you are a marketing agency focused on Adtech and Martech and Google Marketing Platform."},
             {"role": "user", "content": prompt}
