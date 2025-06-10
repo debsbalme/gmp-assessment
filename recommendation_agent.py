@@ -453,12 +453,12 @@ def generate_category_summary(df, category_name):
     Answers: {answers}
     Comments: {comments}
     """
-
-    response = openai.ChatCompletion.create(
+    client = openai.OpenAI()
+    response = client.chat.completions.create(
         model="gpt-4o",
         messages=[{"role": "user", "content": prompt}]
     )
-    return response.choices[0].message["content"]
+    reply = response.choices[0].message.content
 
 # === Step 3: Generate Overall Recommendations ===
 def generate_overall_recommendations(category_summaries, maturity_levels):
@@ -476,11 +476,12 @@ def generate_overall_recommendations(category_summaries, maturity_levels):
     {summary_text}
     """
 
-    response = openai.ChatCompletion.create(
+    client = openai.OpenAI()
+    response = client.chat.completions.create(
         model="gpt-4o",
         messages=[{"role": "user", "content": prompt}]
     )
-    return response.choices[0].message["content"]
+    reply = response.choices[0].message.content
 
 # === Step 4: Display Results in Streamlit ===
 def display_results(maturity_levels, category_summaries, overall_recs, rec_output):
