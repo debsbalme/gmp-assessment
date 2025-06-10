@@ -52,8 +52,9 @@ def main():
                     st.subheader("Agent's Output")
                     if results['matched_recommendations']:
     st.write("### Matched Recommendations")
+
     # Validate all entries are dictionaries
-    if all(isinstance(item, dict) for item in results['matched_recommendations']):
+if all(isinstance(item, dict) for item in results['matched_recommendations']):
         recommendations_df = pd.DataFrame(results['matched_recommendations'])
         recommendations_df['score'] = recommendations_df['score'].round(2)
         recommendations_df['maxweight'] = recommendations_df['maxweight'].round(2)
