@@ -458,7 +458,7 @@ def generate_category_summary(df, category_name):
     Comments: {comments}
     """
 
-    client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
+    client = openai.OpenAI(api_key=st.secrets["OPEN_AI_KEY"]["api_key"])
     response = client.chat.completions.create(
         model="gpt-4.1-mini",
         messages=[
@@ -489,7 +489,7 @@ def generate_overall_recommendations(category_summaries, maturity_levels):
     {summary_text}
     """
 
-    client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
+    client = openai.OpenAI(api_key=st.secrets["OPEN_AI_KEY"]["api_key"])
     response = client.chat.completions.create(
         model="gpt-4.1-mini",
         messages=[
