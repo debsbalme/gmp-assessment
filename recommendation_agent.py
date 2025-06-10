@@ -437,7 +437,7 @@ def run_recommendation_analysis(df):
 #    category_maturity = df.groupby("Category").agg(
 #        total_score=pd.NamedAgg(column="Score", aggfunc="sum"),
 #        total_max_weight=pd.NamedAgg(column="MaxWeight", aggfunc="sum")
-    )
+   # )
 #    category_maturity["maturity_level"] = (category_maturity["total_score"] / category_maturity["total_max_weight"] * 100).round(2)
 #    return category_maturity.reset_index()
 
