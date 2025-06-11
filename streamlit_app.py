@@ -54,10 +54,10 @@ def main():
                     st.write(summary)
 
                     # Step 3: Show final button
-                    if st.button("Identify Top 10 Maturity Gaps"):
-                        maturity_gap_df = identify_top_maturity_gaps(df)
-                        st.subheader("3️⃣ Top 10 Maturity Gaps")
-                        st.dataframe(maturity_gap_df, use_container_width=True)
+                if st.button("Identify Top 10 Maturity Gaps"):
+                    maturity_gaps = identify_top_maturity_gaps(df)
+                    st.subheader("3️⃣ Top 10 Maturity Gaps")
+                    st.markdown(maturity_gaps)
 
         except Exception as e:
             st.error(f"An error occurred while processing the CSV file: {e}")

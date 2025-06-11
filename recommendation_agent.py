@@ -515,7 +515,8 @@ Comments: {comments}
         temperature=0.7
     )
 
-    raw_output = response.choices[0].message.content
+    maturity_gaps = response.choices[0].message.content
+    return maturity_gaps
 
     try:
         return pd.DataFrame(json.loads(raw_output))
