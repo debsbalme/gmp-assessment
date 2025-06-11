@@ -5,7 +5,7 @@ from recommendation_agent import (
     run_recommendation_analysis,
 #    calculate_maturity_levels,
     generate_category_summary,
- #   generate_overall_recommendations,
+ #  generate_overall_recommendations,
     display_results)
 
 
@@ -32,20 +32,18 @@ def main():
                     st.subheader("Running Analysis...")
                     # Call the core logic function from analyzer.py
                     results = run_recommendation_analysis(df)
-                    st.write("DEBUG: results['matched_recommendations']")
+   #                 st.write("DEBUG: results['matched_recommendations']")
                     st.write(results['matched_recommendations'])
                 #     Calculate category maturity
                   #  maturity_levels = calculate_maturity_levels(df)
 
                   #  Generate summaries for each category
-                    category_summaries = {
+                    category_summaries = generate_category_summary(df)
                         #cat: generate_category_summary(df, cat)
                         #for cat in df["Category"].unique()
-                    generate_category_summary(df)}
-                    
 
                     # Generate overall recommendations
-                   # overall_recs = generate_overall_recommendations(category_summaries, maturity_levels)
+                   #overall_recs = generate_overall_recommendations(category_summaries, maturity_levels)
 
                     # Display results
                     display_results(category_summaries)
