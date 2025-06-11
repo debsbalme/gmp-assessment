@@ -526,5 +526,3 @@ Comments: {comments}
             st.error(f"⚠️ Failed to parse GPT output. Try rerunning.\n\n**Raw Output:**\n```\n{raw_output}\n```")
             return pd.DataFrame([{"Heading": "Parsing Error", "Context": "See raw output", "Impact": str(e)}])
 
-
-   
