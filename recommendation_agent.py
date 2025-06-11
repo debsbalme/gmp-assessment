@@ -515,15 +515,28 @@ Comments: {comments}
         temperature=0.7
     )
 
-    maturity_gaps = response.choices[0].message.content
-    return maturity_gaps
+    maturity_gaps_text = response.choices[0].message.content
 
-    try:
-        return pd.DataFrame(json.loads(raw_output))
-    except json.JSONDecodeError:
-        try:
-            return pd.DataFrame(ast.literal_eval(raw_output))
-        except Exception as e:
-            st.error(f"⚠️ Failed to parse GPT output. Try rerunning.\n\n**Raw Output:**\n```\n{raw_output}\n```")
-            return pd.DataFrame([{"Heading": "Parsing Error", "Context": "See raw output", "Impact": str(e)}])
+    # Parse the maturity gaps text into a list of dictionaries
+    gaps = []
+    gap_entries = re.split(r'\d+\.\s*\*\*Heading\*\*\:', maturity_gaps_text)
 
+    for entry in gap_entries[1:]:
+        heading_match = re.search(r'(.*?)\s*\*\*\s*Context\*\*\:', entry, re.DOTALL)
+        context_match = re.search(r'\*\*\s*Context\*\*\:\s*(.*?)\s*\*\*\s*Impact\*\*\:', entry, re.DOTALL)
+        impact_match = re.search(r'\*\*\s*Impact\*\*\:\s*(.*)', entry, re.DOTALL)
+
+        heading = heading_match.group(1).strip() if heading_match else "N/A"
+        context = context_match.group(1).strip() if context_match else "N/A"
+        impact = impact_match.group(1).strip() if impact_match else "N/A"
+
+        gaps.append({
+            "Heading": heading,
+            "Context": context,
+            "Impact": impact
+        })
+
+    # Create a pandas DataFrame
+    mat_gaps_df = pd.DataFrame(gaps)
+
+    return mat_gaps_df

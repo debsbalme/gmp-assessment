@@ -79,5 +79,14 @@ def main():
         except Exception as e:
             st.error(f"An error occurred while processing the CSV file: {e}")
 
+# Optional Reset Button
+st.markdown("---")
+if "step" in st.session_state and st.session_state.step > 0:
+    if st.button("🔄 Start Over"):
+        for key in list(st.session_state.keys()):
+            del st.session_state[key]
+        st.experimental_rerun()
+
+
 if __name__ == "__main__":
     main()
