@@ -540,3 +540,141 @@ Comments: {comments}
     mat_gaps_df = pd.DataFrame(gaps)
 
     return mat_gaps_df
+
+def identify_top_maturity_drivers(df):
+    subset = df.copy()
+
+    questions = subset["Question"].tolist()
+    answers = subset["Answer"].tolist()
+    comments = subset["Comment"].fillna("").tolist() if "Comment" in df.columns else []
+
+    prompt = f"""
+You are a strategic Adtech/Martech advisor assessing an advertiser’s maturity based on their audit responses. 
+Review the following questions, answers, and comments to identify the **top 10 most critical marketing maturity gaps**.
+
+A "maturity gap" is a disconnect between the current state and a more advanced, effective stage of marketing capability.
+
+Each maturity gap should include:
+- A concise **Heading** (e.g., "Lack of First-Party Data Activation")
+- A brief **Context** (what the maturity driver is and why it matters)
+- A clear **Impact** (how this gap is affecting the advertiser's performance or strategic outcomes)
+
+Return a list of the top 10 gaps as structured objects like:
+1. **Heading**: ...
+   **Context**: ...
+   **Impact**: ...
+
+Questions: {questions}
+Answers: {answers}
+Comments: {comments}
+"""
+
+    client = openai.OpenAI(api_key=st.secrets["OPEN_AI_KEY"])
+    response = client.chat.completions.create(
+        model="gpt-4.1-mini",
+        messages=[
+            {"role": "system", "content": "You are a marketing maturity consultant focused on identifying key capability gaps from audits."},
+            {"role": "user", "content": prompt}
+        ],
+        max_tokens=800,
+        temperature=0.7
+    )
+
+    maturity_gaps_text = response.choices[0].message.content
+
+    # Parse the maturity gaps text into a list of dictionaries
+    gaps = []
+    gap_entries = re.split(r'\d+\.\s*\*\*Heading\*\*\:', maturity_gaps_text)
+
+    for entry in gap_entries[1:]:
+        heading_match = re.search(r'(.*?)\s*\*\*\s*Context\*\*\:', entry, re.DOTALL)
+        context_match = re.search(r'\*\*\s*Context\*\*\:\s*(.*?)\s*\*\*\s*Impact\*\*\:', entry, re.DOTALL)
+        impact_match = re.search(r'\*\*\s*Impact\*\*\:\s*(.*)', entry, re.DOTALL)
+
+        heading = heading_match.group(1).strip() if heading_match else "N/A"
+        context = context_match.group(1).strip() if context_match else "N/A"
+        impact = impact_match.group(1).strip() if impact_match else "N/A"
+
+        gaps.append({
+            "Heading": heading,
+            "Context": context,
+            "Impact": impact
+        })
+
+    # Create a pandas DataFrame
+    mat_gaps_df = pd.DataFrame(gaps)
+
+    return mat_gaps_df
+
+def identify_top_maturity_drivers(df):
+    """
+    Identifies the top marketing maturity drivers based on audit responses using the OpenAI API.
+    Returns a pandas DataFrame containing the identified drivers.
+    """
+    subset = df.copy()
+
+    questions = subset["Question"].tolist()
+    answers = subset["Answer"].tolist()
+    comments = subset["Comment"].fillna("").tolist() if "Comment" in df.columns else []
+
+    prompt = f"""
+You are a strategic Adtech/Martech advisor assessing an advertiser’s maturity based on their audit responses.
+Review the following questions, answers, and comments to identify the **top 10 most significant marketing maturity drivers**.
+
+A "maturity driver" is an existing strength, capability, or positive aspect identified in the responses that contributes to or can accelerate marketing maturity.
+
+Each maturity driver should include:
+- A concise **Heading** (e.g., "Strong First-Party Data Foundation")
+- A brief **Context** (what the maturity driver is and where it was identified in the responses)
+- A clear **Opportunity** (how this driver can be leveraged for further growth or improved performance)
+
+Return a list of the top 10 drivers as structured objects like:
+1. **Heading**: ...
+   **Context**: ...
+   **Opportunity**: ...
+
+Questions: {questions}
+Answers: {answers}
+Comments: {comments}
+"""
+    openai_api_key = userdata.get('OPEN_AI_KEY')
+    client = openai.OpenAI(api_key=openai_api_key)
+    response = client.chat.completions.create(
+        model="gpt-4.1-mini", # Using a suitable model
+        messages=[
+            {"role": "system", "content": "You are a marketing maturity consultant focused on identifying key capability strengths from audits."},
+            {"role": "user", "content": prompt}
+        ],
+        max_tokens=800, # Adjust max_tokens as needed
+        temperature=0.7
+    )
+
+    maturity_drivers_text = response.choices[0].message.content
+
+    # Parse the maturity drivers text into a list of dictionaries
+    drivers = []
+    # Split the text by the pattern "X. **Heading**:" where X is a number
+    gap_entries = re.split(r'\d+\.\s*\*\*Heading\*\*\:', maturity_drivers_text)
+
+    # The first element of the split will be empty or preamble, so we skip it
+    for entry in gap_entries[1:]:
+        heading_match = re.search(r'(.*?)\s*\*\*\s*Context\*\*\:', entry, re.DOTALL)
+        context_match = re.search(r'\*\*\s*Context\*\*\:\s*(.*?)\s*\*\*\s*Opportunity\*\*\:', entry, re.DOTALL)
+        opportunity_match = re.search(r'\*\*\s*Opportunity\*\*\:\s*(.*)', entry, re.DOTALL)
+
+
+        heading = heading_match.group(1).strip() if heading_match else "N/A"
+        context = context_match.group(1).strip() if context_match else "N/A"
+        opportunity = opportunity_match.group(1).strip() if opportunity_match else "N/A"
+
+
+        drivers.append({
+            "Heading": heading,
+            "Context": context,
+            "Opportunity": opportunity
+        })
+
+    # Create a pandas DataFrame
+    mat_drivers_df = pd.DataFrame(drivers)
+
+    return mat_drivers_df

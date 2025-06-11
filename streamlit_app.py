@@ -1,9 +1,12 @@
+#app.py
 import streamlit as st
 import pandas as pd
+# Import the new function
 from recommendation_agent import (
     run_recommendation_analysis,
     generate_category_summary,
-    identify_top_maturity_gaps
+    identify_top_maturity_gaps,
+    identify_top_maturity_drivers # Import the new function
 )
 
 def main():
@@ -34,7 +37,7 @@ def main():
                     st.session_state.step = 1
                     st.rerun()
 
-            # Step 2: Show Recommendations
+            # Step 2: Show Recommendations and Button for Step 3
             if st.session_state.step >= 1:
                 results = st.session_state.recommendation_results
                 st.subheader("1️⃣ Matched Recommendations")
@@ -56,25 +59,40 @@ def main():
                 st.write(f"**Total Matched Max Weight:** {results['total_max_score']:.2f}")
                 st.markdown("---")
 
-                if st.session_state.step == 1 and st.button("Generate Category Summary (excl. Business)"):
-                    st.session_state.summary_text = generate_category_summary(df)
-                    st.session_state.step = 2
-                    st.rerun()
+                if st.session_state.step == 1: # Only show this button if we are in step 1
+                    if st.button("Generate Category Summary (excl. Business)"):
+                        st.session_state.summary_text = generate_category_summary(df)
+                        st.session_state.step = 2
+                        st.rerun()
 
-            # Step 3: Show Category Summary
+            # Step 3: Show Category Summary and Button for Step 4
             if st.session_state.step >= 2:
                 st.subheader("2️⃣ Category Summary")
                 st.write(st.session_state.summary_text)
 
-                if st.session_state.step == 2 and st.button("Identify Top 10 Maturity Gaps"):
-                    st.session_state.maturity_gap_df = identify_top_maturity_gaps(df)
-                    st.session_state.step = 3
-                    st.rerun()
+                if st.session_state.step == 2: # Only show this button if we are in step 2
+                    if st.button("Identify Top 10 Maturity Gaps"):
+                        st.session_state.maturity_gap_df = identify_top_maturity_gaps(df)
+                        st.session_state.step = 3
+                        st.rerun()
 
-            # Step 4: Show Maturity Gaps
+            # Step 4: Show Maturity Gaps and Button for Step 5
             if st.session_state.step >= 3:
                 st.subheader("3️⃣ Top 10 Maturity Gaps")
                 st.dataframe(st.session_state.maturity_gap_df, use_container_width=True)
+
+                # Add button and logic for Step 4: Identify Drivers
+                if st.session_state.step == 3: # Only show this button if we are in step 3
+                    if st.button("Identify Top 10 Maturity Drivers"):
+                        st.session_state.maturity_driver_df = identify_top_maturity_drivers(df)
+                        st.session_state.step = 4
+                        st.rerun()
+
+            # Step 5: Show Maturity Drivers
+            if st.session_state.step >= 4:
+                st.subheader("4️⃣ Top 10 Maturity Drivers")
+                st.dataframe(st.session_state.maturity_driver_df, use_container_width=True)
+
 
         except Exception as e:
             st.error(f"An error occurred while processing the CSV file: {e}")
