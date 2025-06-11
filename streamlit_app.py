@@ -10,8 +10,9 @@ from recommendation_agent import (
 )
 
 def main():
+    st.image('acx_logo.png', caption='Acxiom', width=100)
     st.title("GMP Assessment Analysis")
-    st.write("Upload a CSV file to receive tailored audit recommendations and marketing maturity insights.")
+    st.write("Upload a CSV file of the results from the GMP Assessment. /n Step through the process to receive the recommendations, summary, gaps and drivers")
 
     uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
 
@@ -40,7 +41,7 @@ def main():
             # Step 2: Show Recommendations and Button for Step 3
             if st.session_state.step >= 1:
                 results = st.session_state.recommendation_results
-                st.subheader("1️⃣ Matched Recommendations")
+                st.subheader("1️⃣ Capability Recommendations")
                 if results['matched_recommendations']:
                     recommendations_df = pd.DataFrame(results['matched_recommendations'])
                     recommendations_df['score'] = recommendations_df['score'].round(2)
@@ -67,7 +68,7 @@ def main():
 
             # Step 3: Show Category Summary and Button for Step 4
             if st.session_state.step >= 2:
-                st.subheader("2️⃣ Category Summary")
+                st.subheader("2️⃣ Overall Summary of Responses")
                 st.write(st.session_state.summary_text)
 
                 if st.session_state.step == 2 and st.session_state.get('summary_text'): # Only show this button if we are in step 2 and summary is available
