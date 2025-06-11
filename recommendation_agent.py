@@ -3,6 +3,7 @@ import json
 import math # For math.isnan to check for NaN values
 import openai
 import streamlit as st
+import ast
 
 
 # Define the Recommendation Set as provided in your agent's internal knowledge base
@@ -452,8 +453,8 @@ def generate_category_summary(df):
     comments = subset["Comment"].fillna("").tolist() if "Comment" in df.columns else []
 
     prompt = f"""
-    Imagine you are a strategic advisor focused on Adtech and Martech.
-    Provide a short summary using the answers and comments for all questions focusing on the usage of Google Marketing Platform and maturity of the implementation of Adtech and Martech.
+    You are a strategic Adtech/Martech advisor assessing an advertiser’s maturity based on their audit responses
+    Provide a summary using the answers and comments for all questions focusing on their current usage of Google Marketing Platform and their utilization and maturity of the implementation of Adtech and Martech.
 
     Questions: {questions}
     Answers: {answers}
@@ -475,7 +476,56 @@ def generate_category_summary(df):
     return summary
 
 
+def identify_top_maturity_gaps(df):
+    subset = df.copy()
 
+    questions = subset["Question"].tolist()
+    answers = subset["Answer"].tolist()
+    comments = subset["Comment"].fillna("").tolist() if "Comment" in df.columns else []
+
+    prompt = f"""
+You are a strategic Adtech/Martech advisor assessing an advertiser’s maturity based on their audit responses. 
+Review the following questions, answers, and comments to identify the **top 10 most critical marketing maturity gaps**.
+
+A "maturity gap" is a disconnect between the current state and a more advanced, effective stage of marketing capability.
+
+Each maturity gap should include:
+- A concise **Heading** (e.g., "Lack of First-Party Data Activation")
+- A brief **Context** (what the maturity driver is and why it matters)
+- A clear **Impact** (how this gap is affecting the advertiser's performance or strategic outcomes)
+
+Return a list of the top 10 gaps as structured objects like:
+1. **Heading**: ...
+   **Context**: ...
+   **Impact**: ...
+
+Questions: {questions}
+Answers: {answers}
+Comments: {comments}
+"""
+
+    client = openai.OpenAI(api_key=st.secrets["OPEN_AI_KEY"])
+    response = client.chat.completions.create(
+        model="gpt-4.1-mini",
+        messages=[
+            {"role": "system", "content": "You are a marketing maturity consultant focused on identifying key capability gaps from audits."},
+            {"role": "user", "content": prompt}
+        ],
+        max_tokens=800,
+        temperature=0.7
+    )
+
+  # Try to parse the JSON output into a Python list of dicts
+    try:
+        result_list = json.loads(response.choices[0].message.content)
+        return pd.DataFrame(result_list)
+    except json.JSONDecodeError:
+        try:
+            # fallback in case it's Python list-like
+            result_list = ast.literal_eval(response.choices[0].message.content)
+            return pd.DataFrame(result_list)
+        except Exception as e:
+            return pd.DataFrame([{"Heading": "Error parsing GPT output", "Context": str(e), "Impact": ""}])
 
 
    

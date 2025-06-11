@@ -4,8 +4,8 @@ import pandas as pd
 from recommendation_agent import (
     run_recommendation_analysis,
 #    calculate_maturity_levels,
-    generate_category_summary
- #  generate_overall_recommendations,
+    generate_category_summary,
+ identify_top_maturity_gaps
   #  display_results
   )
 
@@ -73,6 +73,10 @@ def main():
                     summary = generate_category_summary(df)
                     st.subheader("Category Summary (excluding Business)")
                     st.write(summary)
+
+                    maturity_gap_df = identify_top_maturity_gaps(df)    
+                    st.subheader("Top 10 Maturity Gaps")
+                    st.dataframe(maturity_gap_df, use_container_width=True)
 
         except Exception as e:
             st.error(f"An error occurred while processing the CSV file. Please check its format and content: {e}")
