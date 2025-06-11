@@ -70,7 +70,7 @@ def main():
                 st.subheader("2️⃣ Category Summary")
                 st.write(st.session_state.summary_text)
 
-                if st.session_state.step == 2: # Only show this button if we are in step 2
+                if st.session_state.step == 2 and st.session_state.get('summary_text'): # Only show this button if we are in step 2 and summary is available
                     if st.button("Identify Top 10 Maturity Gaps"):
                         st.session_state.maturity_gap_df = identify_top_maturity_gaps(df)
                         st.session_state.step = 3
@@ -82,7 +82,7 @@ def main():
                 st.dataframe(st.session_state.maturity_gap_df, use_container_width=True)
 
                 # Add button and logic for Step 4: Identify Drivers
-                if st.session_state.step == 3: # Only show this button if we are in step 3
+                if st.session_state.step == 3 and st.session_state.get('maturity_gap_df') is not None and not st.session_state.maturity_gap_df.empty: # Only show this button if we are in step 3 and gaps are available
                     if st.button("Identify Top 10 Maturity Drivers"):
                         st.session_state.maturity_driver_df = identify_top_maturity_drivers(df)
                         st.session_state.step = 4
