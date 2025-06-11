@@ -4,6 +4,7 @@ import math # For math.isnan to check for NaN values
 import openai
 import streamlit as st
 
+
 # Define the Recommendation Set as provided in your agent's internal knowledge base
 RECOMMENDATION_SET = [
     {
@@ -459,7 +460,7 @@ def generate_category_summary(df):
     Comments: {comments}
     """
 
-    client = openai.OpenAI(api_key=st.secrets["OPEN_AI_KEY"]["api_key"])
+    client = openai.OpenAI(api_key=st.secrets["OPEN_AI_KEY"])
     response = client.chat.completions.create(
         model="gpt-4.1-mini",
         messages=[
