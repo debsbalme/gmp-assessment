@@ -82,7 +82,7 @@ def main():
             if st.session_state.step >= 2:
                 st.subheader("2️⃣ Overall Summary of Responses")
                 st.write(st.session_state.summary_text)
-                time.sleep(3)
+                time.sleep(120)
 
                 if st.session_state.step == 2 and st.session_state.get('summary_text'): # Only show this button if we are in step 2 and summary is available
                     if st.button("Identify Top 10 Maturity Gaps"):
