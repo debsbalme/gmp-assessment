@@ -637,10 +637,10 @@ Questions: {questions}
 Answers: {answers}
 Comments: {comments}
 """
-    openai_api_key = userdata.get('OPEN_AI_KEY')
-    client = openai.OpenAI(api_key=openai_api_key)
+
+    client = openai.OpenAI(api_key=st.secrets["OPEN_AI_KEY"])
     response = client.chat.completions.create(
-        model="gpt-4.1-mini", # Using a suitable model
+        model="gpt-4.1-mini",
         messages=[
             {"role": "system", "content": "You are a marketing maturity consultant focused on identifying key capability strengths from audits."},
             {"role": "user", "content": prompt}
