@@ -43,10 +43,10 @@ def main():
                         #for cat in df["Category"].unique()
 
                     # Generate overall recommendations
-                   #overall_recs = generate_overall_recommendations(category_summaries, maturity_levels)
+                    #overall_recs = generate_overall_recommendations(category_summaries, maturity_levels)
 
                     # Display results
-                    display_results(category_summaries)
+                   # display_results(category_summaries)
                                     #, category_summaries, overall_recs, results)
 
                     #st.subheader("Agent's Output")

@@ -476,15 +476,6 @@ def generate_category_summary(df):
 
 
 
-# === Step 4: Display Results in Streamlit ===
-def display_results(category_summaries):
-    st.title("Google Marketing Platform Maturity Report")
-
-
-    st.header("Category Summaries")
-    for cat, summary in category_summaries.items():
-        st.subheader(cat)
-        st.markdown(summary)
 
 
    
