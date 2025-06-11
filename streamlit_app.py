@@ -7,7 +7,7 @@ from recommendation_agent import (
 )
 
 def main():
-    st.title("Audit Recommendation Agent")
+    st.title("GMP Recommendation Results Agent")
     st.write("Upload a CSV file to receive tailored audit recommendations and marketing maturity insights.")
 
     uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
