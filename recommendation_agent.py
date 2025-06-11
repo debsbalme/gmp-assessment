@@ -515,17 +515,16 @@ Comments: {comments}
         temperature=0.7
     )
 
-  # Try to parse the JSON output into a Python list of dicts
+    raw_output = response.choices[0].message.content
+
     try:
-        result_list = json.loads(response.choices[0].message.content)
-        return pd.DataFrame(result_list)
+        return pd.DataFrame(json.loads(raw_output))
     except json.JSONDecodeError:
         try:
-            # fallback in case it's Python list-like
-            result_list = ast.literal_eval(response.choices[0].message.content)
-            return pd.DataFrame(result_list)
+            return pd.DataFrame(ast.literal_eval(raw_output))
         except Exception as e:
-            return pd.DataFrame([{"Heading": "Error parsing GPT output", "Context": str(e), "Impact": ""}])
+            st.error(f"⚠️ Failed to parse GPT output. Try rerunning.\n\n**Raw Output:**\n```\n{raw_output}\n```")
+            return pd.DataFrame([{"Heading": "Parsing Error", "Context": "See raw output", "Impact": str(e)}])
 
 
    
