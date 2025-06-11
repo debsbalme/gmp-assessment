@@ -70,10 +70,9 @@ def main():
                     st.write(f"**Total Matched Max Weight:** {results['total_max_score']:.2f}")
                     st.markdown("---")
 
-                                  #  Generate summaries for each category
-                category_summaries = generate_category_summary(df)
-                        #cat: generate_category_summary(df, cat)
-                        #for cat in df["Category"].unique()
+                    summary = generate_category_summary(df)
+                    st.subheader("Category Summary (excluding Business)")
+                    st.write(summary)
 
         except Exception as e:
             st.error(f"An error occurred while processing the CSV file. Please check its format and content: {e}")
