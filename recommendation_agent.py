@@ -4,7 +4,7 @@ import math # For math.isnan to check for NaN values
 import openai
 import streamlit as st
 import ast
-
+import re
 
 # Define the Recommendation Set as provided in your agent's internal knowledge base
 RECOMMENDATION_SET = [
