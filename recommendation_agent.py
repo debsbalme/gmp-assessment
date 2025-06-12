@@ -454,8 +454,8 @@ def generate_category_summary(df):
 
     prompt = f"""
     You are a strategic Adtech/Martech advisor assessing an advertiser’s maturity based on their audit responses
-    Provide a summary using the answers and comments for all questions focusing on their current usage of Google Marketing Platform and their utilization and maturity of the implementation of Adtech and Martech.
-
+    Provide a 600 word summary using the answers and comments for all questions focusing on their current usage of Google Marketing Platform and their utilization and maturity of the implementation of Adtech and Martech.
+    Provide the response in a form of a paragraph.
     Questions: {questions}
     Answers: {answers}
     Comments: {comments}

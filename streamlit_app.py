@@ -17,14 +17,20 @@ def main():
     now = datetime.now()
 
 # Format the date and time
-    formatted_date_time = now.strftime("%Y-%m-%d %H:%M:%S")
+    formatted_date_time = now.strftime("%Y-%m-%d")
 
 # Display it in Streamlit
 
-    st.image('acx_logo.png', caption='Acxiom', width=100)
+    st.image('acx_logo.png',  width=100)
     st.title("GMP Assessment Analysis")
     st.write(f"The current date and time is: **{formatted_date_time}**")
-    st.write("Upload a CSV file of the results from the GMP Assessment. /n Step through the process to receive the recommendations, summary, gaps and drivers")
+    st.write("Upload a CSV file of the results from the GMP Assessment." \
+        " Step through the process to receive the recommendations, summary, gaps and drivers" \
+        " Status of each step is shown in the top corner of the screen by a running man" \
+        " At anypoint to restart or provide a different file press the 'Start Over' Button" \
+        " This is designed to streamline and standardize the Analysis of the GMP Assessment and not as a complete analysis, each section should be thoroughly read and massaged for client specific language and requirements, please do not just copy and paste straight into deck" \
+        " As always this is covered by IPG privacy policy." \
+        " Any issues or questions please reach out to deborah.balme@kinesso.com"   )
 
     uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
 
@@ -54,22 +60,23 @@ def main():
             if st.session_state.step >= 1:
                 results = st.session_state.recommendation_results
                 st.subheader("1️⃣ Capability Recommendations")
+                st.write("Recommendations of potential offerings that can be explored, based on the rules as provided and the question/answers provided from client.")
                 if results['matched_recommendations']:
                     recommendations_df = pd.DataFrame(results['matched_recommendations'])
-                    recommendations_df['score'] = recommendations_df['score'].round(2)
-                    recommendations_df['maxweight'] = recommendations_df['maxweight'].round(2)
+  #                  recommendations_df['score'] = recommendations_df['score'].round(2)
+  #                  recommendations_df['maxweight'] = recommendations_df['maxweight'].round(2)
                     recommendations_df.rename(columns={
-                        'recommendation': 'Recommendation',
-                        'score': 'Score',
-                        'maxweight': 'Max Weight'
+                        'recommendation': 'Recommendation'
+  #                      ,'score': 'Score',
+  #                      'maxweight': 'Max Weight'
                     }, inplace=True)
                     st.dataframe(recommendations_df, hide_index=True, use_container_width=True)
                 else:
                     st.info("No recommendations matched based on the provided data.")
 
-                st.write(f"**Total Matched Recommendations:** {results['total_matched_recommendations']}")
-                st.write(f"**Total Matched Score:** {results['total_score']:.2f}")
-                st.write(f"**Total Matched Max Weight:** {results['total_max_score']:.2f}")
+                st.write(f"**Total Recommendations:** {results['total_matched_recommendations']}")
+ #               st.write(f"**Total Matched Score:** {results['total_score']:.2f}")
+  #              st.write(f"**Total Matched Max Weight:** {results['total_max_score']:.2f}")
                 st.markdown("---")
 
                 if st.session_state.step == 1: # Only show this button if we are in step 1
@@ -81,6 +88,7 @@ def main():
             # Step 3: Show Category Summary and Button for Step 4
             if st.session_state.step >= 2:
                 st.subheader("2️⃣ Overall Summary of Responses")
+                st.write("What follows is a general summary of the questions and answers provided by clients in the GMP Assessment, please read to understand the current state of clients implementations and maturity, this is designed to form the starting point of the analysis from the survey and should be used as such.")
                 st.write(st.session_state.summary_text)
 
                 if st.session_state.step == 2 and st.session_state.get('summary_text'): # Only show this button if we are in step 2 and summary is available
