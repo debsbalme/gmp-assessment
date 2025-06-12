@@ -468,7 +468,7 @@ def generate_category_summary(df):
             {"role": "system", "content": "Imagine you are a marketing agency focused on Adtech and Martech and Google Marketing Platform."},
             {"role": "user", "content": prompt}
         ],
-        max_tokens=300,
+        max_tokens=1000,
         temperature=0.7
     )
 
@@ -511,7 +511,7 @@ Comments: {comments}
             {"role": "system", "content": "You are a marketing maturity consultant focused on identifying key capability gaps from audits."},
             {"role": "user", "content": prompt}
         ],
-        max_tokens=800,
+        max_tokens=1000,
         temperature=0.7
     )
 
@@ -576,7 +576,7 @@ Comments: {comments}
             {"role": "system", "content": "You are a marketing maturity consultant focused on identifying key capability gaps from audits."},
             {"role": "user", "content": prompt}
         ],
-        max_tokens=800,
+        max_tokens=1000,
         temperature=0.7
     )
 
