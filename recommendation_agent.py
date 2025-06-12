@@ -485,7 +485,7 @@ def identify_top_maturity_gaps(df):
 
     prompt = f"""
 You are a strategic Adtech/Martech advisor assessing an advertiser’s maturity based on their audit responses. 
-Review the following questions, answers, and comments to identify the **top 10 most critical marketing maturity gaps**.
+Review the following questions, answers, and comments to identify the **most critical marketing maturity gaps**.
 
 A "maturity gap" is a disconnect between the current state and a more advanced, effective stage of marketing capability.
 
@@ -494,7 +494,7 @@ Each maturity gap should include:
 - A brief **Context** (what the maturity driver is and why it matters)
 - A clear **Impact** (how this gap is affecting the advertiser's performance or strategic outcomes)
 
-Return a list of the top 10 gaps as structured objects like:
+Return a list of the gaps as structured objects like:
 1. **Heading**: ...
    **Context**: ...
    **Impact**: ...
