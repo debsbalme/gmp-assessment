@@ -112,16 +112,16 @@ def main():
                     # Rename 'recommendation' column for better display in Streamlit
                     recommendations_df.rename(columns={'recommendation': 'Recommendation'}, inplace=True)
                     recommendations_df.rename(columns={'overview': 'Overview'}, inplace=True)
-                    recommendations_df.rename(columns={'gmp_impact': 'GMP Utilization Impact​'}, inplace=True)
-                    recommendations_df.rename(columns={'bus_impact': 'Business Impact​'}, inplace=True)
+                    recommendations_df.rename(columns={'gmpimpact': 'GMP Utilization Impact​'}, inplace=True)
+                    recommendations_df.rename(columns={'busimpact': 'Business Impact​'}, inplace=True)
 
                     # Reorder columns for better presentation (optional, but good practice)
                     # Ensure all expected columns are present before reordering
                     expected_cols = [
                         'Recommendation',
                         'overview',
-                        'gmp_impact',
-                        'business_impact',
+                        'gmpimpact',
+                        'businessimpact',
                         'score',
                         'maxweight'
                     ]

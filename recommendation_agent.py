@@ -11,7 +11,10 @@ RECOMMENDATION_SET = [
     {
         "question": "which automated bidding strategies have you used in dv360? please give further context of the performance in the comments section.",
         "answer": "n/a",
-        "recommendation": "Explore Automated Bidding Strategies in DV360"
+        "recommendation": "Utilize automated bidding strategies in DV360 to improve campaign agility.",
+        "overview": "Automated bidding in DV360 leverages machine learning to optimize bids in real-time based on various signals like audience, device and contextual data, aligned with business goals like CPA or ROAS.",
+        "gmpimpact": "Implementing automated bidding strategies increases the bidding precision with DV360 and reduces optimization overheads, while aligning campaign delivery with performance goals.",
+        "businessimpact": "Automated bidding strategies provide an additional avenue for advertisers to drive better outcomes across programmatic investments with less manual intervention and improved campaign agility."
         
     },
     {
@@ -22,42 +25,67 @@ RECOMMENDATION_SET = [
     {
         "question": "which automated bidding strategies have you used in sa360?",
         "answer": "n/a",
-        "recommendation": "Explore Automated Bidding Strategies in SA360"
+        "recommendation": "Utilize automated bidding strategies in SA360 to improve campaign agility",
+        "overview": "Search Ads 360 offers automated bidding solutions that use historical performance and real-time auction signals to optimize bids across search engines to meet specific business objectives.",
+        "gmpimpact": "Implementing automated bidding strategies increases the bidding precision with SA360 and reduces optimization overheads, while aligning campaign delivery with performance goals.",
+        "businessimpact": "Automated bidding strategies provide an additional avenue for advertisers to drive better outcomes across search investments with less manual intervention and improved campaign agility."
+
     },
     {
         "question": "have you used any of the cm360's apis? if so, please provide additional detail in the comments box.",
         "answer": "n/a",
-        "recommendation": "Utilize CM360 APIs"
+        "recommendation": "Utilize CM360 APIs for increased productivity",
+        "overview": "Campaign Manager 360 (CM360) APIs allow for automated campaign trafficking, reporting and creative management, increasing operational efficiency, data access and insight generation.",
+        "gmpimpact": "Increase the productivity and agility of CM360, enhancing the flow of data between wider GMP products and external platforms, whilst minimizing the requirement for manual intervention.",
+        "businessimpact": "Faster execution and deeper insights leading to quicker optimizations, reduced setup time and higher productivity, allowing existing resource to focus on driving innovation."      
     },
     {
         "question": "have you used sa360's api for campaign management and reporting automation? if so, please provide additional detail in the comments box.",
         "answer": ["no - we are currently not using sa360 apis","n/a"],
-        "recommendation": "Utilize SA360 APIs"
+        "recommendation": "Utilize SA360 APIs for increased productivity",
+        "overview": "SA360 APIs provide automated control over search campaigns, allowing bulk edits, custom reporting and integration with internal tools for optimization and analysis.",
+        "gmpimpact": "Increase the productivity of SA360, streamlining campaign management and enhancing the flow of data between wider GMP products and external platforms. ",
+        "businessimpact": "Enhanced automation improves agility and control over search campaigns translate into faster optimizations, increased performance and reduced operational costs."
     },
     {
         "question": "have you used dv360's api for campaign management and reporting automation? if so, please provide additional detail in the comments box.",
         "answer": "n/a",
-        "recommendation": "Utilize DV360 APIs"
+        "recommendation": "Utilize DV360 APIs for increased productivity",
+        "overview": "DV360 APIs provide advertisers automated control to manage and optimize campaigns, targeting, creatives and reporting.",
+        "gmpimpact": "Increase the productivity of DV360, scaling optimizations, creating dynamic campaign adjustments and more agile media buying.",
+        "businessimpact": "Enhanced automation improves the speed of campaign execution and accuracy, resulting in greater operational scale and stronger campaign performance."
     },
     {
         "question": "how are you activating first party data within dv360?",
         "answer": "n/a",
-        "recommendation": "Utilize 1PD in DV360"
+        "recommendation": "Utilize 1PD in DV360 for stronger data-driven optimization",
+        "overview": "DV360 allows advertisers to onboard and activate 1st-party data such as CRM lists and site activity to inform and enhance audience targeting, bidding and measurement. Further solutions such as Google's Customer Match can also be utilized ",
+        "gmpimpact": "Bringing 1st-party data in to DV360 unlocks additional platform features and capabilities (such as Customer Match) increasing the utilization of DV360. ",
+        "businessimpact": "Linking 1PD sources to media activation results in higher-quality targeting and greater business outcomes from programmatic investments, with advertisers experiencing on average 2x revenue uplift. "   
     },
     {
         "question": "how are you activating first party data within sa360?",
         "answer": "n/a",
-        "recommendation": "Utilize 1PD in SA360"
+        "recommendation": "Utilize 1PD in SA360 for stronger data-driven optimization",
+        "overview": "SA360 supports the integration of 1st-party data to inform bid strategies, audience targeting, and performance measurement across search campaigns.",
+        "gmpimpact": "Bringing 1st-party data in to SA360 unlocks additional platform features and capabilities, increasing the utilization of SA360.",
+        "businessimpact": "Stronger data-driven optimization results in more efficient budget use, higher-quality traffic, and greater business outcomes from paid search investments."        
     },
     {
         "question": "how are you activating first party data within cm360?",
         "answer": "n/a",
-        "recommendation": "Utilize 1PD in CM360"
+        "recommendation": "Utilize 1PD in CM360 for enhanced insight of customer interactions and segmentation",
+        "overview": "CM360 supports the use of 1st-party data through floodlight activities and audience lists for more accurate measurement, tracking and attribution. This results in enriched reporting and campaign performance analysis.",
+        "gmpimpact": "Integrating 1st-party data into CM360 unlocks additional platform capabilities and enhances cross-channel measurement, custom audience segments and provides more meaningful attribution and post-campaign analysis.",
+        "businessimpact": "Improved marketing effectiveness through clearer performance insights, better-informed media decisions and a more holistic understanding of customer interactions across media touchpoints."
     },
     {
         "question": "is your instance of google tag manager server-side or client-side?",
         "answer": "gtm (client-side)",
-        "recommendation": "Server-Side Tagging (sGTM)"
+        "recommendation": "Consider implementing server-side Google Tag Manager (sGTM) for increased data accuracy and control.",
+        "overview": "Server-side tagging involves routing tag calls through a server rather than directly from a user's browser, improving load speed, data security, and privacy compliance.",
+        "gmpimpact": "A forward thinking & futureproofed utilization of GMP, as server-side tagging ensures more complete, accurate and consistent data signals with more advertiser control over data sharing.",
+        "businessimpact": "Improved data quality with more control, resulting in a more futureproofed tag management set-up in a changing regulatory landscape."
     },
     {
         "question": "are your platforms set-up to test privacy sandbox apis (such as protected audience api, topics api, attribution reporting api etc)",
@@ -65,7 +93,10 @@ RECOMMENDATION_SET = [
             "yes but we have not begun testing any google privacy sandbox apis",
             "no we have not tested any google privacy sandbox apis, but we would like to understand what is applicable to our business"
         ],
-        "recommendation": "Privacy Sandbox API Consultation"
+        "recommendation": "Explore Privacy Sandbox API testing, further adapting a changing regulatory landscape",
+        "overview": "Privacy Sandbox is Google's initiative to develop privacy-preserving alternatives for 3rd party cookies and cross-site tracking. APIs like Topics, Attribution Reporting, Private Aggregation and Protected Audience are designed to enable advertising functionalities while minimizing user data exposure.",
+        "gmpimpact": "Exploring and testing Privacy Sandbox APIs is a key step in Google advertisers preparing for continued user privacy changes while maintaining critical functions such as frequency capping, remarketing, and attribution.",
+        "businessimpact": "Proactively exploring and adopting privacy-safe tools aids with media activation & strategy continuity, compliance, and sustained campaign performance in a changing regulatory landscape."        
     },
     {
         "set_id": "1pdm",
@@ -82,7 +113,10 @@ RECOMMENDATION_SET = [
                 ]
             }
         ],
-        "recommendation": "GA4 Enhanced Utilization (1P Data Management)"
+        "recommendation": "Enhance the utilization of GA4 for more sophisticated 1st party data management",
+        "overview": "GA4 can be utilized to enhance customer insight and enable an advanced 1st party data strategy, that can be shared with both GMP products and external platforms for more tailored and efficient targeting.",
+        "gmpimpact": "Innovatively utilize the full breadth of GA4 capabilities to enable 1PD activation without additional MarTech deployment, whilst also unlocking further utilization of wider GMP products and external platforms.",
+        "businessimpact": "This enables more personalized campaigns, better user engagement, and more agile audience targeting driving further operational efficiencies."
     },
     {
         "set_id": "adh",
@@ -110,7 +144,10 @@ RECOMMENDATION_SET = [
                 ]
             }
         ],
-        "recommendation": "Ads Data Hub Stewardship"
+        "recommendation": "Consider deployment of enhanced hands-on optimization strategy within Ads Data Hub (ADH)",
+        "overview": "Deploy hands-on optimization strategy within ADH, enhancing the efficiency and output quality of use cases when utilizing Google's wall-garden clean room.",
+        "gmpimpact": "Increase the value derived from ADH and related GMP ecosystem, through enhanced utilization of its functionalities and measurement mechanisms.",
+        "businessimpact": "More efficient and reliable reporting & measurement outcomes, improving the proven marketing ROI."        
     },
     {
         "set_id": "ga4imp",
@@ -148,7 +185,10 @@ RECOMMENDATION_SET = [
                 ]
             }
         ],
-        "recommendation": "GA4 Implementation and Platform Maintenance Audit"
+        "recommendation": "Consider GA4 audit of platform implementation & maintenance to increase on-site insights and a more advanced audience strategy",
+        "overview": "GA4 provides cross-platform analytics with advanced event tracking, predictive metrics, advanced audience tools and seamless integration with the wider GMP suite. An audit of GA4 implementation and maintenance ensures correct setup and ongoing data quality.",
+        "gmpimpact": "Auditing and properly maintaining GA4 ensures accurate, holistic data collection that enhances customer insights and audience strategy, whilst also improving the utilization of wider GMP products such as media activation and website and app performance analysis.",
+        "businessimpact": "Reliable GA4 implementation and maintenance supports enhanced insights, a more effective audience strategy and increased return on investment in wider GMP products."
     },
     {
         "set_id": "enhancedconv",
@@ -202,8 +242,11 @@ RECOMMENDATION_SET = [
                 ]
             }
         ],
-        "recommendation": "Enhanced Conversions"
-    },
+        "recommendation": "Implement Google's Enhanced Conversions for more complete conversion data capture",
+        "overview": "Enhanced Conversions is a solution that improves the accuracy of conversion measurement by securely using hashed first-party data to match conversions to ad interactions. This helps recover conversions that may not be tracked due to browser limitations or user privacy settings.",
+        "gmpimpact": "Implementing Enhanced Conversions will allow the advertiser to capture more complete conversion data, improving the reliability of attribution and automated bidding capabilities in Google Ads and SA360.",
+        "businessimpact": "Implementation of Enhanced Conversions will lead to smarter bidding decisions, improved ROI and stronger confidence in marketing spend."
+     },
     {
         "set_id": "GCPCDP",
         "questions": [
@@ -249,7 +292,10 @@ RECOMMENDATION_SET = [
                 ]
             }
         ],
-        "recommendation": "GCP as CDP"
+        "recommendation": "GCP as CDP",
+        "overview": "",
+        "gmpimpact": "",
+        "businessimpact": ""
     },
     {
         "set_id": "GCPClean",
@@ -271,7 +317,10 @@ RECOMMENDATION_SET = [
                 ]
             }
         ],
-        "recommendation": "GCP Data Cleanroom Implementation"
+        "recommendation": "Consider utilization of GCP data cleanroom for secure data processing and collaboration",
+        "overview": "A data cleanroom on GCP allows secure data collaboration between the advertiser and partners (e.g., Google, retailers, publishers) without exposing user-level information.",
+        "gmpimpact": "The GCP cleanroom can enable use cases including audience syndication and audience enrichment, as well as analytics use cases such as incrementality and partner overlap without violating data privacy.",
+        "businessimpact": "This delivers stronger insights into media effectiveness, partner value and multi-touch attribution, enabling more strategic media planning and increased privacy controls over data sharing."
     }
 ]
 
@@ -363,9 +412,7 @@ def run_recommendation_analysis(df):
                     'recommendation': rec_recommendation, # Updated to use the new 'Recommendation' field
                     'overview': rec_overview,
                     'gmp_impact': rec_gmp_impact,
-                    'business_impact': rec_business_impact,
-                    'score': question_score_to_add,
-                    'maxweight': question_max_weight_to_add
+                    'business_impact': rec_business_impact
                 })
                 total_matched_recommendations += 1
                 total_score += question_score_to_add
@@ -424,9 +471,7 @@ def run_recommendation_analysis(df):
                     'recommendation': rec_recommendation, # Updated to use the new 'Recommendation' field
                     'overview': rec_overview,
                     'gmp_impact': rec_gmp_impact,
-                    'business_impact': rec_business_impact,
-                    'score': current_group_contributing_scores,
-                    'maxweight': current_group_contributing_max_weights
+                    'business_impact': rec_business_impact
                 })
                 total_matched_recommendations += 1
                 total_score += current_group_contributing_scores
