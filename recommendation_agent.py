@@ -324,6 +324,9 @@ def run_recommendation_analysis(df):
             rec_question = item['question'].lower().strip()
             rec_answer_raw = item['answer']
             rec_recommendation = item['recommendation']
+            rec_overview = item.get('overview', 'N/A')
+            rec_gmp_impact = item.get('gmpimpact', 'N/A')
+            rec_business_impact = item.get('businessimpact', 'N/A')
             rec_type = item.get('type')
 
             csv_entry = csv_data_map.get(rec_question)
@@ -357,7 +360,10 @@ def run_recommendation_analysis(df):
 
             if current_condition_met:
                 matched_recommendations_with_scores.append({
-                    'recommendation': rec_recommendation,
+                    'recommendation': rec_recommendation, # Updated to use the new 'Recommendation' field
+                    'overview': rec_overview,
+                    'gmp_impact': rec_gmp_impact,
+                    'business_impact': rec_business_impact,
                     'score': question_score_to_add,
                     'maxweight': question_max_weight_to_add
                 })
@@ -415,7 +421,10 @@ def run_recommendation_analysis(df):
 
             if all_sub_questions_match:
                 matched_recommendations_with_scores.append({
-                    'recommendation': group_recommendation,
+                    'recommendation': rec_recommendation, # Updated to use the new 'Recommendation' field
+                    'overview': rec_overview,
+                    'gmp_impact': rec_gmp_impact,
+                    'business_impact': rec_business_impact,
                     'score': current_group_contributing_scores,
                     'maxweight': current_group_contributing_max_weights
                 })
@@ -485,8 +494,8 @@ def generate_bullet_summary(df):
 
     prompt = f"""
     You are a strategic Adtech/Martech advisor assessing an advertiser’s maturity based on their audit responses
-    Provide a concise summary using the answers and comments for all questions focusing on their current usage of Google Marketing Platform and their utilization and maturity of the implementation of Adtech and Martech.
-    Provide the response in a set of bullet points that are clear and concise, these will be emailed and need to be understand by sales, marketing and adtech colleagues.
+    Provide a summary using the answers and comments for all questions focusing on their current usage of Google Marketing Platform and their utilization and maturity of the implementation of Adtech and Martech.
+    Provide the response in a set of bullet points, these will be emailed and need to be understand by sales, marketing and adtech colleagues.
     Questions: {questions}
     Answers: {answers}
     Comments: {comments}
