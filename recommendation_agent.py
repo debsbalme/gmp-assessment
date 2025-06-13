@@ -5,6 +5,7 @@ import openai
 import streamlit as st
 import ast
 import re
+from fpdf import FPDF
 
 # Define the Recommendation Set as provided in your agent's internal knowledge base
 RECOMMENDATION_SET = [
@@ -690,3 +691,41 @@ Comments: {comments}
     mat_drivers_df = pd.DataFrame(drivers)
 
     return mat_drivers_df
+
+def create_full_report_pdf(summary, bullet_points, gaps_df, drivers_df, recommendations_df):
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_auto_page_break(auto=True, margin=15)
+    pdf.set_font("Arial", size=12)
+
+    pdf.set_font(style="B")
+    pdf.cell(0, 10, "Category Summary", ln=True)
+    pdf.set_font(style="")
+    for line in summary.split("\n"):
+        pdf.multi_cell(0, 10, line)
+
+    pdf.set_font(style="B")
+    pdf.cell(0, 10, "\nBullet Summary", ln=True)
+    pdf.set_font(style="")
+    for line in bullet_points.split("\n"):
+        pdf.multi_cell(0, 10, line)
+
+    pdf.set_font(style="B")
+    pdf.cell(0, 10, "\nTop Maturity Gaps", ln=True)
+    pdf.set_font(style="")
+    for _, row in gaps_df.iterrows():
+        pdf.multi_cell(0, 10, f"Heading: {row['Heading']}\nContext: {row['Context']}\nImpact: {row['Impact']}\n")
+
+    pdf.set_font(style="B")
+    pdf.cell(0, 10, "\nTop Maturity Drivers", ln=True)
+    pdf.set_font(style="")
+    for _, row in drivers_df.iterrows():
+        pdf.multi_cell(0, 10, f"Heading: {row['Heading']}\nContext: {row['Context']}\nOpportunity: {row['Opportunity']}\n")
+
+    pdf.set_font(style="B")
+    pdf.cell(0, 10, "\nRecommendations", ln=True)
+    pdf.set_font(style="")
+    for _, row in recommendations_df.iterrows():
+        pdf.multi_cell(0, 10, f"Recommendation: {row['Recommendation']}\nOverview: {row['Overview']}\nGMP Impact: {row['GMP Utilization Impact']}\nBusiness Impact: {row['Business Impact']}\n")
+
+    return pdf.output(dest="S").encode("latin1")
