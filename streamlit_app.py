@@ -1,4 +1,4 @@
-# Streamlit App with Sequential Step Buttons (using st.rerun())
+# appy.py
 import streamlit as st
 import pandas as pd
 from datetime import datetime
@@ -49,7 +49,7 @@ def main():
             if "step" not in st.session_state:
                 st.session_state.step = 0
 
-                display_breadcrumb(st.session_state.step)
+            display_breadcrumb(st.session_state.step)
 
             # Step 0: Category Summary
             if st.session_state.step == 0:
@@ -76,19 +76,19 @@ def main():
 
             # Step 2: Maturity Gaps
             if st.session_state.step == 2:
-                if st.button("3️⃣ Identify Maturity Drivers"):
-                    st.session_state.maturity_gap_df = identify_top_maturity_drivers(df)
+                if st.button("3️⃣ Identify Maturity Gaps"):
+                    st.session_state.maturity_gap_df = identify_top_maturity_gaps(df)
                     st.session_state.step = 3
                     st.rerun()
 
             if st.session_state.step >= 3:
-                st.subheader("3️⃣ Maturity Drivers")
+                st.subheader("3️⃣ Maturity Gaps")
                 st.dataframe(st.session_state.maturity_gap_df, use_container_width=True)
 
             # Step 3: Maturity Drivers
             if st.session_state.step == 3:
-                if st.button("4️⃣ Identify Maturity Gaps"):
-                    st.session_state.maturity_driver_df = identify_top_maturity_gaps(df)
+                if st.button("4️⃣ Identify Maturity Drivers"):
+                    st.session_state.maturity_driver_df = identify_top_maturity_drivers(df)
                     st.session_state.step = 4
                     st.rerun()
 
@@ -107,16 +107,13 @@ def main():
                 st.subheader("5️⃣ Capability Recommendations")
                 results = st.session_state.recommendation_results
                 if results and results['matched_recommendations']:
-                    # Create DataFrame from matched recommendations, which now include the new fields
                     recommendations_df = pd.DataFrame(results['matched_recommendations'])
-                    # Rename 'recommendation' column for better display in Streamlit
-                    recommendations_df.rename(columns={'recommendation': 'Recommendation'}, inplace=True)
-                    recommendations_df.rename(columns={'overview': 'Overview'}, inplace=True)
-                    recommendations_df.rename(columns={'gmpimpact': 'GMP Utilization Impact'}, inplace=True)
-                    recommendations_df.rename(columns={'busimpact': 'Business Impact'}, inplace=True)
-
-                    # Reorder columns for better presentation (optional, but good practice)
-                    # Ensure all expected columns are present before reordering
+                    recommendations_df.rename(columns={
+                        'recommendation': 'Recommendation',
+                        'overview': 'Overview',
+                        'gmp_impact': 'GMP Utilization Impact',
+                        'business_impact': 'Business Impact'
+                    }, inplace=True)
                     expected_cols = [
                         'Recommendation',
                         'Overview',
@@ -125,7 +122,6 @@ def main():
                         'score',
                         'maxweight'
                     ]
-                    # Filter for columns that actually exist in the DataFrame
                     display_cols = [col for col in expected_cols if col in recommendations_df.columns]
                     st.dataframe(recommendations_df[display_cols], hide_index=True, use_container_width=True)
                 else:
