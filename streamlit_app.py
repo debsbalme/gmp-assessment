@@ -10,6 +10,20 @@ from recommendation_agent import (
     identify_top_maturity_drivers
 )
 
+def display_breadcrumb(step):
+    steps = [
+        "1️⃣ Category Summary",
+        "2️⃣ Bullet Summary",
+        "3️⃣ Maturity Gaps",
+        "4️⃣ Maturity Drivers",
+        "5️⃣ Recommendations"
+    ]
+    breadcrumb = " ➤ ".join([
+        f"**{label}**" if i == step else label
+        for i, label in enumerate(steps)
+    ])
+    st.markdown(f"#### Progress: {breadcrumb}")
+
 def main():
     now = datetime.now()
     formatted_date_time = now.strftime("%Y-%m-%d")
@@ -98,16 +112,16 @@ def main():
                     # Rename 'recommendation' column for better display in Streamlit
                     recommendations_df.rename(columns={'recommendation': 'Recommendation'}, inplace=True)
                     recommendations_df.rename(columns={'overview': 'Overview'}, inplace=True)
-                    recommendations_df.rename(columns={'gmpimpact': 'GMP Utilization Impact​'}, inplace=True)
-                    recommendations_df.rename(columns={'busimpact': 'Business Impact​'}, inplace=True)
+                    recommendations_df.rename(columns={'gmpimpact': 'GMP Utilization Impact'}, inplace=True)
+                    recommendations_df.rename(columns={'busimpact': 'Business Impact'}, inplace=True)
 
                     # Reorder columns for better presentation (optional, but good practice)
                     # Ensure all expected columns are present before reordering
                     expected_cols = [
                         'Recommendation',
-                        'overview',
-                        'gmpimpact',
-                        'businessimpact',
+                        'Overview',
+                        'GMP Utilization Impact',
+                        'Business Impact',
                         'score',
                         'maxweight'
                     ]
