@@ -11,7 +11,8 @@ RECOMMENDATION_SET = [
     {
         "question": "which automated bidding strategies have you used in dv360? please give further context of the performance in the comments section.",
         "answer": "n/a",
-        "recommendation": "Explore Automaated Bidding Strategies in DV360"
+        "recommendation": "Explore Automated Bidding Strategies in DV360"
+        
     },
     {
         "question": "have you developed or used any of the following custom bidding algorithms in dv360? please give further context of the objectives and performance in the comments section.",
@@ -475,6 +476,36 @@ def generate_category_summary(df):
     summary = response.choices[0].message.content
     return summary
 
+def generate_bullet_summary(df):
+    
+    subset = df[df["Category"] != "Business"]
+    questions = subset["Question"].tolist()
+    answers = subset["Answer"].tolist()
+    comments = subset["Comment"].fillna("").tolist() if "Comment" in df.columns else []
+
+    prompt = f"""
+    You are a strategic Adtech/Martech advisor assessing an advertiser’s maturity based on their audit responses
+    Provide a concise summary using the answers and comments for all questions focusing on their current usage of Google Marketing Platform and their utilization and maturity of the implementation of Adtech and Martech.
+    Provide the response in a set of bullet points that are clear and concise, these will be emailed and need to be understand by sales, marketing and adtech colleagues.
+    Questions: {questions}
+    Answers: {answers}
+    Comments: {comments}
+    """
+
+    client = openai.OpenAI(api_key=st.secrets["OPEN_AI_KEY"])
+    response = client.chat.completions.create(
+        model="gpt-4.1-mini",
+        messages=[
+            {"role": "system", "content": "Imagine you are a marketing agency focused on Adtech and Martech and Google Marketing Platform."},
+            {"role": "user", "content": prompt}
+        ],
+        max_tokens=1000,
+        temperature=0.7
+    )
+
+    bullet_summary = response.choices[0].message.content
+    return bullet_summary
+
 
 def identify_top_maturity_gaps(df):
     subset = df.copy()
@@ -550,9 +581,9 @@ def identify_top_maturity_drivers(df):
 
     prompt = f"""
 You are a strategic Adtech/Martech advisor assessing an advertiser’s maturity based on their audit responses. 
-Review the following questions, answers, and comments to identify the **top 10 most critical marketing maturity gaps**.
+Review the following questions, answers, and comments to identify the **most critical marketing maturity drivers**.
 
-A "maturity gap" is a disconnect between the current state and a more advanced, effective stage of marketing capability.
+A "maturity driver" is something that helps a business become more advanced, efficient, and strategic in how it markets to its customers.
 
 Each maturity gap should include:
 - A concise **Heading** (e.g., "Lack of First-Party Data Activation")
@@ -573,7 +604,7 @@ Comments: {comments}
     response = client.chat.completions.create(
         model="gpt-4.1-mini",
         messages=[
-            {"role": "system", "content": "You are a marketing maturity consultant focused on identifying key capability gaps from audits."},
+            {"role": "system", "content": "You are a marketing maturity consultant focused on identifying key capability drivers from audits."},
             {"role": "user", "content": prompt}
         ],
         max_tokens=1000,
