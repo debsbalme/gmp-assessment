@@ -70,29 +70,19 @@ def create_full_report_pdf(summary, bullet_points, gaps_df, drivers_df, recommen
     pdf.cell(0, 10, "\nTop Maturity Gaps", ln=True)
     pdf.set_font(style="")
     for _, row in gaps_df.iterrows():
-        pdf.multi_cell(0, 10, f"Heading: {row.get('Heading', 'N/A')}
-Context: {row.get('Context', 'N/A')}
-Impact: {row.get('Impact', 'N/A')}
-")
+        pdf.multi_cell(0, 10, f"Heading: {row.get('Heading', 'N/A')} ontext: {row.get('Context', 'N/A')}Impact: {row.get('Impact', 'N/A')}")
 
     pdf.set_font(style="B")
     pdf.cell(0, 10, "\nTop Maturity Drivers", ln=True)
     pdf.set_font(style="")
     for _, row in drivers_df.iterrows():
-        pdf.multi_cell(0, 10, f"Heading: {row.get('Heading', 'N/A')}
-Context: {row.get('Context', 'N/A')}
-Opportunity: {row.get('Opportunity', 'N/A')}
-")
+        pdf.multi_cell(0, 10, f"Heading: {row.get('Heading', 'N/A')} Context: {row.get('Context', 'N/A')} Opportunity: {row.get('Opportunity', 'N/A')}")
 
     pdf.set_font(style="B")
     pdf.cell(0, 10, "\nRecommendations", ln=True)
     pdf.set_font(style="")
     for _, row in recommendations_df.iterrows():
-        pdf.multi_cell(0, 10, f"Recommendation: {row.get('Recommendation', 'N/A')}
-Overview: {row.get('Overview', 'N/A')}
-GMP Impact: {row.get('GMP Utilization Impact', 'N/A')}
-Business Impact: {row.get('Business Impact', 'N/A')}
-")
+        pdf.multi_cell(0, 10, f"Recommendation: {row.get('Recommendation', 'N/A')} Overview: {row.get('Overview', 'N/A')} GMP Impact: {row.get('GMP Utilization Impact', 'N/A')} Business Impact: {row.get('Business Impact', 'N/A')} ")
 
     return pdf.output(dest="S").encode("latin1")
 
