@@ -10,20 +10,6 @@ from recommendation_agent import (
     identify_top_maturity_drivers
 )
 
-def display_breadcrumb(step):
-    steps = [
-        "1️⃣ Category Summary",
-        "2️⃣ Bullet Summary",
-        "3️⃣ Maturity Gaps",
-        "4️⃣ Maturity Drivers",
-        "5️⃣ Recommendations"
-    ]
-    breadcrumb = " ➤ ".join([
-        f"**{label}**" if i == step else label
-        for i, label in enumerate(steps)
-    ])
-    st.markdown(f"#### Progress: {breadcrumb}")
-
 def main():
     now = datetime.now()
     formatted_date_time = now.strftime("%Y-%m-%d")
