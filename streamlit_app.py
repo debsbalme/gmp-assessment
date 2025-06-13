@@ -28,7 +28,26 @@ def display_breadcrumb(step):
     ])
     st.markdown(f"#### Progress: {breadcrumb}")
 
-def create_full_report_pdf(summary, bullet_points, gaps_df, drivers_df, recommendations_df):
+def create_full_report_pdf(summary, bullet_points, gaps_df, drivers_df, recommendations_df, title_value="Assessment"):
+    # Extract dynamic title from summary or data (adjust as needed)
+    title_suffix = title_value[:40] if title_value else "Assessment"
+    today = datetime.now().strftime("%Y-%m-%d")
+    report_title = f"GMP Maturity Report – {title_suffix} – {today}"
+
+    logo_path = 'acx_logo.png'  # Ensure this file is accessible
+    pdf = FPDF()
+    pdf.add_page()
+    # Add Logo
+    try:
+        pdf.image(logo_path, x=10, y=8, w=33)
+    except:
+        pass  # Fail silently if logo isn't found
+
+    pdf.set_font("Arial", 'B', 16)
+    pdf.cell(0, 40, "GMP Assessment Results for ", ln=True, align='C')  # Title centered below the logo
+
+    pdf.set_auto_page_break(auto=True, margin=15)
+    pdf.set_font("Arial", size=12)
     pdf = FPDF()
     pdf.add_page()
     pdf.set_auto_page_break(auto=True, margin=15)
