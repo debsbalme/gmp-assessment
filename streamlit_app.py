@@ -74,7 +74,7 @@ def main():
             if st.session_state.step >= 2:
                 st.subheader("2️⃣ Bullet Point Summary")
                 st.write("Please copy and paste the text below into your email or document.")
-                st.code(st.session_state.bullet_summary, language="markdown")
+                st.write(st.session_state.bullet_summary)
 
             if st.session_state.step == 2:
                 if st.button("3️⃣ Identify Maturity Gaps"):
