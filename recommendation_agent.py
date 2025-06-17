@@ -21,7 +21,10 @@ RECOMMENDATION_SET = [
     {
         "question": "have you developed or used any of the following custom bidding algorithms in dv360? please give further context of the objectives and performance in the comments section.",
         "answer": "n/a",
-        "recommendation": "Explore Custom Bidding Strategies in DV360"
+        "recommendation": "Utilize custom bidding strategies in DV360 to improve campaign agility",
+        "overview": "Custom Bidding in DV360 allows advertisers to build their own bidding algorithms tailored to very specific high-value performance objectives, assigning custom signals such as Floodlight variables or Google Analytics goals to hit campaign targets.",
+        "gmpimpact": "Custom Bidding leverages Google's bidding infrastructure while using advertiser-defined logic, enhancing optimization precision, integrating unique data and logic and directly aligning campaign delivery with unique business objectives.",
+        "businessimpact": "This drives superior media performance and improves alignment between media investment and business priorities, whilst fostering campaign agility for maximized marketing effectiveness."
     },
     {
         "question": "which automated bidding strategies have you used in sa360?",
@@ -293,10 +296,10 @@ RECOMMENDATION_SET = [
                 ]
             }
         ],
-        "recommendation": "GCP as CDP",
-        "overview": "",
-        "gmpimpact": "",
-        "businessimpact": ""
+        "recommendation": "Leverage Google Cloud and existing GMP investments for advanced audience modelling, insights and streamlined activation",
+        "overview": "Leverage Google Cloud and the existing Google Marketing Platform investments to create a single solution for data storage, modelling & analysis, resulting in a more cost-efficient advanced audience strategy.",
+        "gmpimpact": "Enhance the connectivity between existing Google platforms in place and enable more effective cross-channel targeting, insights & measurement. ",
+        "businessimpact": "Optimize the overarching platforms architecture, utilizing existing Google platforms for advanced audience strategy, increasing ROI of MarTech investment."
     },
     {
         "set_id": "GCPClean",
