@@ -580,8 +580,8 @@ A "maturity gap" is a disconnect between the current state and a more advanced, 
 
 Each maturity gap should include:
 - A concise **Heading** (e.g., "Lack of First-Party Data Activation")
-- A brief **Context** (what the maturity driver is and why it matters)
-- A clear **Impact** (how this gap is affecting the advertiser's performance or strategic outcomes)
+- A brief 25 words or less **Context** (what the maturity driver is and why it matters)
+- A clear 25 words or less **Impact** (how this gap is affecting the advertiser's performance or strategic outcomes)
 
 Return a list of the gaps as structured objects like:
 1. **Heading**: ...
@@ -645,8 +645,8 @@ A "maturity driver" is something that the business is currently doing well that 
 
 Each maturity driver should include:
 - A concise **Heading** (e.g., "Integration of First-Party Data")
-- A brief **Context** (what the maturity driver is and why it matters)
-- A clear **Impact** (how this driver improves the advertiser's maturity or strategic outcomes)
+- A brief 25 words or less **Context** (what the maturity driver is and why it matters)
+- A clear 25 words or less **Impact** (how this driver improves the advertiser's maturity or strategic outcomes)
 
 Return a list of the most critical drivers as structured objects like:
 1. **Heading**: ...
