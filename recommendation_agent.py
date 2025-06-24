@@ -641,12 +641,12 @@ def identify_top_maturity_drivers(df):
 You are a strategic Adtech/Martech advisor assessing an advertiser’s maturity based on their audit responses. 
 Review the following questions, answers, and comments to identify the **most critical marketing maturity drivers**.
 
-A "maturity driver" is something that helps a business become more advanced, efficient, and strategic in how it markets to its customers.
+A "maturity driver" is something that the business is currently doing well that accounts for their current level of marketing maturity.
 
 Each maturity driver should include:
-- A concise **Heading** (e.g., "Lack of First-Party Data Activation")
+- A concise **Heading** (e.g., "Integration of First-Party Data")
 - A brief **Context** (what the maturity driver is and why it matters)
-- A clear **Impact** (how this gap is affecting the advertiser's performance or strategic outcomes)
+- A clear **Impact** (how this driver improves the advertiser's maturity or strategic outcomes)
 
 Return a list of the most critical drivers as structured objects like:
 1. **Heading**: ...
