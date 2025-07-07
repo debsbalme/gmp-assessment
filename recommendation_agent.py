@@ -92,6 +92,14 @@ RECOMMENDATION_SET = [
         "businessimpact": "Improved data quality with more control, resulting in a more futureproofed tag management set-up in a changing regulatory landscape."
     },
     {
+        "question": "which of the following google products are linked to your google analytics instance (ga4/ga360)?",
+        "answer": "n/a",
+        "recommendation": "Leverage Google Cloud and existing GMP investments for advanced audience modelling, insights and streamlined activation",
+        "overview": "Leverage Google Cloud and the existing Google Marketing Platform investments to create a single solution for data storage, modelling & analysis, resulting in a more cost-efficient advanced audience strategy.",
+        "gmpimpact": "Enhance the connectivity between existing Google platforms in place and enable more effective cross-channel targeting, insights & measurement.",
+        "businessimpact": "Optimize the overarching platforms architecture, utilizing existing Google platforms for advanced audience strategy, increasing ROI of MarTech investment."        
+    },
+    {
         "question": "are your platforms set-up to test privacy sandbox apis (such as protected audience api, topics api, attribution reporting api etc)",
         "answer": [
             "yes but we have not begun testing any google privacy sandbox apis",
@@ -103,24 +111,24 @@ RECOMMENDATION_SET = [
         "businessimpact": "Proactively exploring and adopting privacy-safe tools aids with media activation & strategy continuity, compliance, and sustained campaign performance in a changing regulatory landscape."        
     },
     {
-        "set_id": "1pdm",
+        "set_id": "bigquery",
         "questions": [
             {
                 "question": "is bigquery in use for warehousing ga4/ga360 data?",
-                "answer": "yes"
+                "answer": "no"
             },
             {
-                "question": "which of the following describes the way you use data in bigquery?",
+                "question": "which google products are currently being utilized?",
                 "answer": [
-                    "bigquery data is used for warehousing and analyzing ga4 data only",
-                    "we have bigquery set up but don't use it"
+                    "google analytics 4 (ga4)",
+                    "google analytics 360 (ga360)"
                 ]
-            }
+            },
         ],
-        "recommendation": "Enhance the utilization of GA4 for more sophisticated 1st party data management",
-        "overview": "GA4 can be utilized to enhance customer insight and enable an advanced 1st party data strategy, that can be shared with both GMP products and external platforms for more tailored and efficient targeting.",
-        "gmpimpact": "Innovatively utilize the full breadth of GA4 capabilities to enable 1PD activation without additional MarTech deployment, whilst also unlocking further utilization of wider GMP products and external platforms.",
-        "businessimpact": "This enables more personalized campaigns, better user engagement, and more agile audience targeting driving further operational efficiencies."
+        "recommendation": "Consider utilizing BigQuery for warehousing of data",
+        "overview": "BigQuery is Google Cloud's data warehouse. Utilizing BigQuery enables advertisers to store, unify and analyze 1st-party, GMP and external data in one environment. Data stored in BigQuery can be stored in perpetuity while GA4 stores data for a maximum of 14 months.",
+        "gmpimpact": "BigQuery integrates natively with GMP tools, including GA4, DV360, SA360, and CM360, unlocking use cases like improved data storage, predictive modeling, audience segmentation and deeper attribution analysis.",
+        "businessimpact": "Utilization of BigQuery can enhance data-driven decision-making and supports long-term business intelligence strategies that enhance customer value and marketing performance."
     },
     {
         "set_id": "adh",
@@ -157,10 +165,6 @@ RECOMMENDATION_SET = [
         "set_id": "ga4imp",
         "questions": [
             {
-                "question": "which of the following google products are linked to your google analytics instance (ga4/ga360)?",
-                "answer": "n/a"
-            },
-            {
                 "question": "which google products are currently being utilized?",
                 "answer": [
                     "google analytics 4 (ga4)",
@@ -176,16 +180,9 @@ RECOMMENDATION_SET = [
             },
             {
                 "question": "which of the following best describes the way you use data in ga4/ga360?",
-                "answer": [
+                "answer": ["we collect pageviews and sporadic event data. we regularly leverage the built-in ga4 reports to gain insights about our customers, improve website/app user experience and campaign performance.",
                     "we collect only high-level website data and periodically review the basic metics (i.e. page views, unique visitors, bounce rate, top viewed pages) to monitor performance.",
                     "we have it set up but it is currently not being utilized."
-                ]
-            },
-            {
-                "question": "are you activating media against audiences built in ga4?",
-                "answer": [
-                    "no audiences are built in ga4.",
-                    "we have built audiences in ga4 but have not used them in media activation."
                 ]
             }
         ],
