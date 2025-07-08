@@ -314,7 +314,7 @@ RECOMMENDATION_SET = [
                 "answer": [
                     "very important, data must stay governed and secure at all times",
                     "mostly important, we prefer privacy controls but allow some flexibility",
-                    "somewhat important, depends on the partner or use case"
+                    "somewhat important, depends on the partner or use case",
                 ]
             }
         ],
