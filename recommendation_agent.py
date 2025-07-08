@@ -357,11 +357,16 @@ def run_recommendation_analysis(df):
         score = max(0.0, float(score))
         max_weight = max(0.0, float(max_weight))
 
-        csv_data_map[question_key] = {
-            'answer': answer_value,
-            'score': score,
-            'maxweight': max_weight
-        }
+        # Handle multiple answers from CSV for the same question by storing them as a list
+        if question_key not in csv_data_map:
+            csv_data_map[question_key] = {
+                'answers': [answer_value],
+                'score': score,
+                'maxweight': max_weight
+            }
+        else:
+            csv_data_map[question_key]['answers'].append(answer_value)
+
 
     matched_recommendations_with_scores = []
     total_matched_recommendations = 0
@@ -380,40 +385,41 @@ def run_recommendation_analysis(df):
             rec_type = item.get('type')
 
             csv_entry = csv_data_map.get(rec_question)
-            user_answer_from_csv = csv_entry['answer'] if csv_entry else None
+            user_answers_from_csv = csv_entry['answers'] if csv_entry else [] # Get list of answers
 
             current_condition_met = False
             question_score_to_add = 0.0
             question_max_weight_to_add = 0.0
 
-            if user_answer_from_csv is not None:
+            if user_answers_from_csv: # Check if there are answers from CSV
                 normalized_rec_answers = []
                 if isinstance(rec_answer_raw, list):
                     normalized_rec_answers = [normalize_answer_for_comparison(val) for val in rec_answer_raw]
                 else:
                     normalized_rec_answers = [normalize_answer_for_comparison(rec_answer_raw)]
 
-                is_match_found = False
-                for expected_normalized_answer in normalized_rec_answers:
-                    if user_answer_from_csv == expected_normalized_answer:
-                        is_match_found = True
-                        break
-
                 if rec_type == "negative_choice":
-                    current_condition_met = not is_match_found
+                    # For negative_choice, the condition is met if NONE of the user's answers are in the specified list
+                    current_condition_met = all(user_ans not in normalized_rec_answers for user_ans in user_answers_from_csv)
                 else:
-                    current_condition_met = is_match_found
+                    # For positive choice (default), the condition is met if ANY of the user's answers are in the specified list
+                    current_condition_met = any(user_ans in normalized_rec_answers for user_ans in user_answers_from_csv)
 
-                if current_condition_met:
+
+                if current_condition_met and csv_entry: # Also check if csv_entry exists before accessing score/maxweight
+                    # If the condition is met, use the score and maxweight from the CSV row corresponding to this question.
                     question_score_to_add = csv_entry.get('score', 0.0)
                     question_max_weight_to_add = csv_entry.get('maxweight', 0.0)
 
+
             if current_condition_met:
                 matched_recommendations_with_scores.append({
-                    'recommendation': rec_recommendation, # Updated to use the new 'Recommendation' field
+                    'recommendation': rec_recommendation,
                     'overview': rec_overview,
                     'gmp_impact': rec_gmp_impact,
-                    'business_impact': rec_business_impact
+                    'business_impact': rec_business_impact,
+                    'score': question_score_to_add,
+                    'maxweight': question_max_weight_to_add
                 })
                 total_matched_recommendations += 1
                 total_score += question_score_to_add
@@ -424,6 +430,9 @@ def run_recommendation_analysis(df):
             all_sub_questions_match = True
             group_questions = item['questions']
             group_recommendation = item['recommendation']
+            rec_overview = item.get('overview', 'N/A')
+            rec_gmp_impact = item.get('gmpimpact', 'N/A')
+            rec_business_impact = item.get('businessimpact', 'N/A')
 
             current_group_contributing_scores = 0.0
             current_group_contributing_max_weights = 0.0
@@ -434,45 +443,44 @@ def run_recommendation_analysis(df):
                 sub_q_type = sub_q_item.get('type')
 
                 csv_sub_q_entry = csv_data_map.get(sub_q_question)
-                user_answer_from_csv_sub_q = csv_sub_q_entry['answer'] if csv_sub_q_entry else None
+                user_answers_from_csv_sub_q = csv_sub_q_entry['answers'] if csv_sub_q_entry else [] # Get list of answers
 
                 current_sub_q_condition_met = False
 
-                if user_answer_from_csv_sub_q is not None:
+                if user_answers_from_csv_sub_q: # Check if there are answers from CSV for sub-question
                     normalized_sub_q_answers = []
                     if isinstance(sub_q_answer_raw, list):
                         normalized_sub_q_answers = [normalize_answer_for_comparison(val) for val in sub_q_answer_raw]
                     else:
                         normalized_sub_q_answers = [normalize_answer_for_comparison(sub_q_answer_raw)]
 
-                    is_sub_q_match_found = False
-                    for expected_normalized_sub_q_ans in normalized_sub_q_answers:
-                        if user_answer_from_csv_sub_q == expected_normalized_sub_q_ans:
-                            is_sub_q_match_found = True
-                            break
-
                     if sub_q_type == "negative_choice":
-                        current_sub_q_condition_met = not is_sub_q_match_found
+                         # For negative_choice, the condition is met if NONE of the user's answers are in the specified list
+                        current_sub_q_condition_met = all(user_ans not in normalized_sub_q_answers for user_ans in user_answers_from_csv_sub_q)
                     else:
-                        current_sub_q_condition_met = is_sub_q_match_found
-                else:
-                    current_sub_q_condition_met = False
+                        # For positive choice (default), the condition is met if ANY of the user's answers are in the specified list
+                        current_sub_q_condition_met = any(user_ans in normalized_sub_q_answers for user_ans in user_answers_from_csv_sub_q)
 
-
+                # If any sub-question condition is NOT met, the entire group condition fails
                 if not current_sub_q_condition_met:
                     all_sub_questions_match = False
-                    break
+                    break # Exit the inner loop as the group condition has failed
                 else:
+                    # If the sub-question condition IS met, add its score and maxweight
                     if csv_sub_q_entry:
                         current_group_contributing_scores += csv_sub_q_entry.get('score', 0.0)
                         current_group_contributing_max_weights += csv_sub_q_entry.get('maxweight', 0.0)
 
+
+            # After checking all sub-questions, if all matched, add the group recommendation
             if all_sub_questions_match:
                 matched_recommendations_with_scores.append({
-                    'recommendation': rec_recommendation, # Updated to use the new 'Recommendation' field
+                    'recommendation': group_recommendation,
                     'overview': rec_overview,
                     'gmp_impact': rec_gmp_impact,
-                    'business_impact': rec_business_impact
+                    'business_impact': rec_business_impact,
+                    'score': current_group_contributing_scores,
+                    'maxweight': current_group_contributing_max_weights
                 })
                 total_matched_recommendations += 1
                 total_score += current_group_contributing_scores
@@ -484,7 +492,6 @@ def run_recommendation_analysis(df):
         'total_score': total_score,
         'total_max_score': total_max_score
     }
-
 
 # (Keep your RECOMMENDATION_SET and normalize_answer_for_comparison function here)
 
