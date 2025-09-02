@@ -100,7 +100,7 @@ RECOMMENDATION_SET = [
         "businessimpact": "Optimize the overarching platforms architecture, utilizing existing Google platforms for advanced audience strategy, increasing ROI of MarTech investment."        
     },
     {
-        "question": "are your platforms set-up to test privacy sandbox apis (such as protected audience api, topics api, attribution reporting api etc)",
+        "question": "are your platforms set-up to test privacy sandbox apis (such as protected audience api, topics api, attribution reporting api etc)?",
         "answer": [
             "yes but we have not begun testing any google privacy sandbox apis",
             "no we have not tested any google privacy sandbox apis, but we would like to understand what is applicable to our business"
@@ -516,12 +516,7 @@ def generate_category_summary(df):
     comments = subset["Comment"].fillna("").tolist() if "Comment" in df.columns else []
 
     prompt = f"""
-    You are a strategic Adtech/Martech advisor assessing an advertiser’s maturity based on their audit responses
-    Provide a 600 word summary using the answers and comments for all questions focusing on their current usage of Google Marketing Platform and their utilization and maturity of the implementation of Adtech and Martech.
-    Provide the response in a form of a paragraph.
-    Questions: {questions}
-    Answers: {answers}
-    Comments: {comments}
+    405 error
     """
 
     client = openai.OpenAI(api_key=st.secrets["OPEN_AI_KEY"])
@@ -570,6 +565,7 @@ def generate_bullet_summary(df):
 
 
 def identify_top_maturity_gaps(df):
+    
     subset = df.copy()
 
     questions = subset["Question"].tolist()
