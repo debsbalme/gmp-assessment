@@ -100,10 +100,10 @@ RECOMMENDATION_SET = [
         "businessimpact": "Optimize the overarching platforms architecture, utilizing existing Google platforms for advanced audience strategy, increasing ROI of MarTech investment."        
     },
     {
-        "question": "are your platforms set-up to test privacy sandbox apis (such as protected audience api, topics api, attribution reporting api etc)?",
+        "question": "are your platforms set-up to test privacy sandbox apis (such as protected audience api, topics api, attribution reporting api etc)",
         "answer": [
             "yes but we have not begun testing any google privacy sandbox apis",
-            "no we have not tested any google privacy sandbox apis, but we would like to understand what is applicable to our business"
+            "no we have not tested any google privacy sandbox apis, but we would like to understand what is applicable to our business."
         ],
         "recommendation": "Explore Privacy Sandbox API testing, further adapting a changing regulatory landscape",
         "overview": "Privacy Sandbox is Google's initiative to develop privacy-preserving alternatives for 3rd party cookies and cross-site tracking. APIs like Topics, Attribution Reporting, Private Aggregation and Protected Audience are designed to enable advertising functionalities while minimizing user data exposure.",
@@ -516,7 +516,11 @@ def generate_category_summary(df):
     comments = subset["Comment"].fillna("").tolist() if "Comment" in df.columns else []
 
     prompt = f"""
-    405 error
+    You are a strategic Adtech/Martech advisor assessing an advertiser’s maturity based on their audit responses
+    Provide a 600 word summary using the answers and comments for all questions focusing on their current usage of Google Marketing Platform and their utilization and maturity of the implementation of Adtech and Martech.
+    Questions: {questions}
+    Answers: {answers}
+    Comments: {comments}
     """
 
     client = openai.OpenAI(api_key=st.secrets["OPEN_AI_KEY"])
